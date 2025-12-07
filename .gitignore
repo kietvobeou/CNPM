@@ -1,0 +1,11 @@
+# Visual Studio Code
+.vscode/
+
+# Visual Studio
+.vs/
+*.vside
+VFileContentIndex/
+
+# Build outputs
+bin/
+obj/

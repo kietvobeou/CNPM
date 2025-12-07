@@ -1,0 +1,344 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - N13 Cinema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Inter', sans-serif;
+        }
+        .header-container {
+            background-color: #0D0D0D;
+            color: #F5F5F5;
+            padding: 0 40px;
+            height: 80px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+            margin-right: 40px;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-menu {
+            display: flex;
+            flex: 1;
+            justify-content: flex-start;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .nav-item {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+            padding: 0 5px;
+        }
+
+        .nav-link {
+            display: block;
+            font-size: 16px;
+            font-weight: 500;
+            color: #F5F5F5;
+            text-decoration: none;
+            padding: 12px 10px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-family: 'Lora', serif;
+            text-transform: capitalize;
+            position: relative;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-link:hover {
+            color: #F5F5F5;
+        }
+
+        .nav-link:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 15px;
+            right: 15px;
+            height: 3px;
+            background-color: #DCDCDC;
+            border-radius: 2px;
+        }
+
+        .nav-link.active {
+            color: #DCDCDC;
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 15px;
+            right: 15px;
+            height: 3px;
+            background-color: #DCDCDC;
+            border-radius: 2px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .footer-container {
+            background-color: #0D0D0D;
+            color: #F5F5F5;
+            padding: 50px 40px 30px;
+            margin-top: auto;
+            font-family: 'Lora', serif;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-logo-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .footer-description {
+            color: #B3B3B3;
+            line-height: 1.6;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            color: #F5F5F5;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 15px;
+        }
+
+        .footer-section ul li a {
+            color: #F5F5F5;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            text-transform: capitalize;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .footer-section ul li a:hover {
+            color: #DCDCDC;
+        }
+
+        .footer-section p {
+            color: #B3B3B3;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .contact-info i {
+            color: #F5F5F5;
+            width: 20px;
+            margin-top: 3px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #1A1A1A;
+            border-radius: 50%;
+            color: #F5F5F5;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            background-color: #FF6B00;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #999;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <header class="header-container">
+        <a href="@Url.Action("Index", "Home")" class="logo-link">
+            <img src="~/Content/HinhAnh/logo.svg" alt="N13 Cinema Logo" class="logo-img" width="100">
+        </a>
+
+        <nav class="nav-menu">
+            <div class="nav-item">
+                <a href="@Url.Action("MyTickets", "Account")" class="nav-link">Vé của tôi</a>
+            </div>
+            <div class="nav-item">
+                <a href="@Url.Action("NowShowing", "Movies")" class="nav-link">Phim đang chiếu</a>
+            </div>
+            <div class="nav-item">
+                <a href="@Url.Action("ComingSoon", "Movies")" class="nav-link">Phim sắp chiếu</a>
+            </div>
+            <div class="nav-item">
+                <a href="@Url.Action("Index", "News")" class="nav-link">Tin tức</a>
+            </div>
+            <div class="nav-item">
+                <a href="@Url.Action("Logout", "Account")" class="nav-link">Đăng xuất</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        @RenderBody()
+    </main>
+
+    <footer class="footer-container">
+        <div class="footer-content">
+            <div class="footer-section footer-logo-section">
+                <img src="~/Content/HinhAnh/Logo.svg" alt="N13 Cinema Logo" class="footer-logo" width="200">
+            </div>
+            <div class="footer-section">
+                <h3>TÀI KHOẢN</h3>
+                <ul>
+                    <li><a href="@Url.Action("Login", "Account")"><i class="fas fa-sign-in-alt"></i> Đăng Nhập</a></li>
+                    <li><a href="@Url.Action("Register", "Account")"><i class="fas fa-user-plus"></i> Đăng Ký</a></li>
+                    <li><a href="@Url.Action("MyTickets", "Account")"><i class="fas fa-ticket-alt"></i> Vé Của Tôi</a></li>
+                    <li><a href="@Url.Action("Profile", "Account")"><i class="fas fa-user-circle"></i> Tài Khoản</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>KẾT NỐI</h3>
+                <ul>
+                    <li><a href="#" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    <li><a href="#" target="_blank"><i class="fab fa-tiktok"></i> Tiktok</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>CHĂM SÓC KHÁCH HÀNG</h3>
+                <div class="contact-info">
+                    <i class="fas fa-phone-alt"></i>
+                    <div>
+                        <p style="color: #B3B3B3; font-size: 14px;">Hotline</p>
+                        <p style="color: #F5F5F5; font-weight: 600; font-size: 16px;">1800 8077</p>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <i class="far fa-clock"></i>
+                    <div>
+                        <p style="color: #B3B3B3; font-size: 14px;">Giờ làm việc</p>
+                        <p style="color: #F5F5F5; font-weight: 600; font-size: 16px;">8:00 - 22:00</p>
+                    </div>
+                </div>
+                <p style="margin-left: 32px; margin-top: -10px; color: #B3B3B3; font-size: 13px;">(Tất cả các ngày)</p>
+                <div class="contact-info">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <p style="color: #B3B3B3; font-size: 14px;">Email</p>
+                        <p style="color: #F5F5F5; font-weight: 600; font-size: 16px;">hoidap@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; @DateTime.Now.Year - N13 Cinema. Tất cả các quyền được bảo lưu.</p>
+        </div>
+    </footer>
+</body>
+</html>
