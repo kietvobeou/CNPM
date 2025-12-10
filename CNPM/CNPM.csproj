@@ -297,6 +297,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_KhachHangLayout.cshtml" />
     <Content Include="Views\Cinema\Index.cshtml" />
+    <Content Include="Views\Cinema\ChiTiet.cshtml" />
+    <Content Include="Views\Cinema\DatVe.cshtml" />
+    <Content Include="Views\Cinema\ThanhToan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

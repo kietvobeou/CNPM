@@ -1,0 +1,173 @@
+﻿@model PHIM
+
+@{
+    ViewBag.Title = "ChiTiet";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+    var lstBL = (ViewBag.BinhLuan as IEnumerable<BINH_LUAN>) ?? Enumerable.Empty<BINH_LUAN>();
+}
+
+<style>
+    .rating {
+        direction: rtl;
+        display: inline-block;
+    }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+            padding: 0 2px;
+        }
+
+            .rating input:checked ~ label,
+            .rating label:hover,
+            .rating label:hover ~ label {
+                color: #ffc107;
+            }
+
+    .star-rating {
+        color: #ffc107;
+        font-size: 20px;
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+        // Xử lý form bình luận bằng AJAX
+        $('#formBinhLuan').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+
+            $.ajax({
+                url: '@Url.Action("ThemBinhLuan", "Phim")',
+                type: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Có lỗi xảy ra khi gửi bình luận.');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra khi gửi bình luận.');
+                }
+            });
+        });
+    });
+</script>
+
+<section class="hero-section" style="background-image: url('@Url.Content("~/Content/HinhAnh/" + Model.AnhNen)'); background-size: cover; background-position: center; height: 400px; position: relative;">
+    <div class="hero-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5);"></div>
+    <div class="container" style="position: relative; z-index: 2; height: 100%; display: flex; align-items: center;">
+        <div class="hero-content text-white">
+            <h1 class="display-4 fw-bold">@Model.TenPhim</h1>
+        </div>
+    </div>
+</section>
+
+<!-- Section 2: Chi tiết phim -->
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <!-- Cột trái (4) - Ảnh bìa -->
+            <div class="col-lg-4 col-md-5 mb-4">
+                <!-- Ảnh bìa dọc -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <img src="@Url.Content("~/Content/HinhAnh/" + Model.AnhBia)"
+                         class="card-img-top"
+                         alt="@Model.TenPhim"
+                         style="height: 400px; object-fit: cover;">
+                </div>
+
+                <!-- Nút đặt vé -->
+                <div class="d-grid">
+                    <a href="@Url.Action("DatVe", "Cinema", new { id = Model.IDPhim })" class="btn btn-danger btn-lg">
+                        <i class="fas fa-ticket-alt me-2"></i>ĐẶT VÉ
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cột phải (8) - Thông tin phim -->
+            <div class="col-lg-8 col-md-7">
+                <!-- Tiêu đề lớn tên phim -->
+                <h1 class="display-5 fw-bold mb-4" style="color: #dc3545;">@Model.TenPhim</h1>
+
+                <!-- Thông tin phim xếp dọc -->
+                <div class="d-flex flex-column gap-3 mb-4">
+                    <div class="p-3 border rounded bg-light">
+                        <div class="text-muted small">THỜI LƯỢNG</div>
+                        <div class="fw-bold fs-5">@Model.ThoiLuong Phút</div>
+                    </div>
+                    <div class="p-3 border rounded bg-light">
+                        <div class="text-muted small">ĐẠO DIỄN</div>
+                        <div class="fw-bold fs-5">@Model.DaoDien</div>
+                    </div>
+                    <div class="p-3 border rounded bg-light">
+                        <div class="text-muted small">THỂ LOẠI</div>
+                        <div class="fw-bold fs-5">@Model.TheLoai</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phần Tóm tắt - Full width -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="mb-5">
+                    <h2 class="mb-3" style="color: #333;">TÓM TẮT</h2>
+                    <div class="p-4 border rounded">
+                        <p class="lead mb-0" style="line-height: 1.8; text-align: justify;">@Model.TomTat</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phần Bình luận - Full width -->
+        <div class="row">
+            <div class="col-12">
+                <div>
+                    <h2 class="mb-4" style="color: #333;">BÌNH LUẬN</h2>
+                    <!-- Danh sách bình luận -->
+                    <div class="comments-section">
+                        @if (lstBL.Any())
+                        {
+                            foreach (var comment in lstBL)
+                            {
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="card-subtitle mb-0 text-primary">@comment.TenNguoiBinhLuan</h6>
+                                            <small class="text-muted">@string.Format("{0:dd/MM/yyyy HH:mm}", comment.NgayBinhLuan)</small>
+                                        </div>
+                                        <div class="mb-2">
+                                            @for (int i = 0; i < comment.SoSao; i++)
+                                            {
+                                                <span class="star-rating">★</span>
+                                            }
+                                            @for (int i = comment.SoSao; i < 5; i++)
+                                            {
+                                                <span class="star-rating" style="color: #ccc;">★</span>
+                                            }
+                                        </div>
+                                        <p class="card-text">@comment.NoiDung</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                Chưa có bình luận nào. Hãy là người đầu tiên bình luận!
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

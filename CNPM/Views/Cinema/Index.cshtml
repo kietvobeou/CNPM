@@ -16,6 +16,7 @@
         <h1 class="banner-title">TRẢI NGHIỆM ĐIỆN ẢNH ĐỈNH CAO</h1>
         <p class="banner-subtitle">Khám phá thế giới phim ảnh đa dạng với chất lượng hình ảnh và âm thanh sống động nhất. Cùng N13 Cinema đắm chìm trong những câu chuyện tuyệt vời.</p>
         <button class="banner-cta">Đặt vé ngay</button>
+
     </div>
 </section>
 
@@ -27,7 +28,7 @@
                 <h2 class="section-title text-start">PHIM ĐANG CHIẾU</h2>
             </div>
         </div>
-
+        <a href="@Url.Action("ChiTiet", "Cinema", new { id = 1})">link</a>
         <div class="row">
             @foreach (var item in phimDangChieu)
             {

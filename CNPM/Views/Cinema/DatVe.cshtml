@@ -1,0 +1,636 @@
+﻿@model PHIM
+
+@{
+    ViewBag.Title = "Đặt Vé";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+    var danhSachRap = ViewBag.danhSachRap as IEnumerable<RAP_PHIM> ?? Enumerable.Empty<RAP_PHIM>();
+    var danhSachSuatChieu = ViewBag.danhSachSuatChieu as IEnumerable<XUAT_CHIEU> ?? Enumerable.Empty<XUAT_CHIEU>();
+    var chiTietDatVe = ViewBag.chiTietDatVe as IEnumerable<CT_DATVE> ?? Enumerable.Empty<CT_DATVE>();
+}
+
+<style>
+    .table-custom {
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+        .table-custom thead th {
+            background-color: #0D0D0D;
+            color: #D5D5D5;
+            border: none;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .table-custom tbody td {
+            background-color: #696969;
+            color: #D5D5D5;
+            border: none;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .table-custom tbody tr:hover td {
+            background-color: #808080;
+        }
+
+        .table-custom tbody tr.selected td {
+            background-color: #555555;
+        }
+
+    .time-slot {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 5px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        background-color: white;
+    }
+
+        .time-slot:hover {
+            border-color: #00BFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,191,255,0.2);
+        }
+
+        .time-slot.selected {
+            background-color: #00BFFF;
+            color: white;
+            border-color: #00BFFF;
+        }
+
+        .time-slot.disabled {
+            background-color: #f8f9fa;
+            color: #ccc;
+            cursor: not-allowed;
+            border-color: #e9ecef;
+        }
+
+    /* Chọn ghế - chiếm toàn bộ width, không có nền */
+    .seat-section {
+        width: 100%;
+        margin: 20px 0;
+        padding: 0;
+    }
+
+    .seat-grid-container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+
+    /* Grid layout cho 4 hàng A-D với 10 ghế mỗi hàng */
+    .seat-grid {
+        display: grid;
+        grid-template-columns: 50px repeat(10, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 10px;
+        max-width: 800px;
+        margin: 20px auto;
+    }
+
+    .seat-row-label {
+        grid-column: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .seat {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        transition: all 0.2s;
+        background-color: white;
+        margin: 0 auto;
+    }
+
+        .seat:hover:not(.occupied):not(.selected) {
+            border-color: #00BFFF;
+            background-color: #f0f8ff;
+        }
+
+        .seat.selected {
+            background-color: #00BFFF;
+            color: white;
+            border-color: #00BFFF;
+        }
+
+        .seat.occupied {
+            background-color: #4169E1;
+            color: white;
+            border-color: #4169E1;
+            cursor: not-allowed;
+        }
+
+    .seat-status-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 20px;
+        padding: 15px;
+        border-top: 1px solid #eee;
+    }
+
+    .seat-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-indicator {
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .status-available .status-indicator {
+        border: 2px solid #ddd;
+        background-color: white;
+    }
+
+    .status-occupied .status-indicator {
+        background-color: #4169E1;
+        border: 2px solid #4169E1;
+    }
+
+    .status-selected .status-indicator {
+        background-color: #00BFFF;
+        border: 2px solid #00BFFF;
+    }
+
+    .date-picker-container {
+        position: relative;
+        max-width: 300px;
+    }
+
+    .date-picker {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
+        .date-picker:focus {
+            border-color: #00BFFF;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,191,255,0.1);
+        }
+
+    /* Screen - Màn hình */
+    .screen {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto 40px auto;
+        padding: 15px;
+        background: linear-gradient(to top, #333, #666);
+        color: white;
+        text-align: center;
+        border-radius: 5px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        position: relative;
+    }
+
+        .screen:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 0 0 50% 50%;
+        }
+
+    /* Loading spinner */
+    .loading-spinner {
+        display: none;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Cột trái (8/12) -->
+        <div class="col-lg-8 col-md-8">
+            <!-- Tên phim và chọn ngày -->
+            <div class="mb-5">
+                <h1 class="display-4 fw-bold mb-4" style="color: #dc3545;">@Model.TenPhim</h1>
+
+                <div class="d-flex align-items-center mb-4">
+                    <label class="me-3 fw-bold" style="font-size: 18px;">Chọn ngày:</label>
+                    <div class="date-picker-container">
+                        <input type="date" id="ngayChieu" class="date-picker">
+                    </div>
+                </div>
+
+                <!-- Bảng chọn rạp -->
+                <div class="mb-5">
+                    <h3 class="mb-3">Chọn rạp:</h3>
+                    <table class="table-custom w-100">
+                        <thead>
+                            <tr>
+                                <th>TÊN RẠP</th>
+                                <th>ĐỊA CHỈ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var rap in danhSachRap)
+                            {
+                                <tr data-id="@rap.IDRap">
+                                    <td>@rap.TenRap</td>
+                                    <td>@rap.DiaChi</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Giờ chiếu (chỉ hiện khi đã chọn rạp và ngày) -->
+            <div id="gioChieuContainer" class="mb-5" style="display: none;">
+                <h3 class="mb-3">GIỜ CHIẾU <small class="text-muted">(Thời gian chiếu phim có thể chênh lệch 15 phút do chiếu quảng cáo, giới thiệu phim ra rạp)</small></h3>
+                <div class="loading-spinner" id="loadingSuatChieu">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Đang tải...</span>
+                    </div>
+                    <p class="mt-2">Đang tải suất chiếu...</p>
+                </div>
+                <div class="d-flex flex-wrap time-slot-container">
+                    <!-- Các time slot sẽ được load bằng AJAX -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Cột phải (4/12) - Ảnh bìa dọc (KHÔNG sticky) -->
+        <div class="col-lg-4 col-md-4">
+            <div class="card border-0 shadow-lg mb-4">
+                <img src="@Url.Content("~/Content/HinhAnh/" + Model.AnhBia)"
+                     class="card-img-top"
+                     alt="@Model.TenPhim"
+                     style="height: 500px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">@Model.TenPhim</h5>
+                    <p class="card-text text-muted">
+                        <i class="fas fa-clock me-1"></i> @Model.ThoiLuong phút
+                        <br>
+                        <i class="fas fa-film me-1"></i> @Model.TheLoai
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Phần chọn ghế - CHIẾM 100% WIDTH -->
+<div id="chonGheContainer" class="seat-section" style="display: none;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-4">Chọn Ghế</h3>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Số lượng ghế đã chọn:</label>
+                    <input type="number" id="soLuongGhe" class="form-control" style="max-width: 150px;" readonly value="0">
+                </div>
+
+                <!-- Màn hình -->
+                <div class="screen">
+                    <i class="fas fa-film me-2"></i> MÀN HÌNH
+                </div>
+
+                <!-- Danh sách ghế - 4 hàng A-D, mỗi hàng 10 ghế -->
+                <div class="seat-grid-container">
+                    <div class="seat-grid">
+                        @{
+                            var hang = new[] { "A", "B", "C", "D" };
+                            var soGhe = 10;
+                        }
+
+                        @for (int i = 0; i < hang.Length; i++)
+                        {
+                            <div class="seat-row-label">@hang[i]</div>
+
+                            for (int j = 1; j <= soGhe; j++)
+                            {
+                                var seatId = $"{hang[i]}{j}";
+                                <div class="seat" data-seat="@seatId">
+                                    @j
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <!-- Trạng thái ghế -->
+                <div class="seat-status-container">
+                    <div class="seat-status status-available">
+                        <div class="status-indicator"></div>
+                        <span>Trống</span>
+                    </div>
+                    <div class="seat-status status-occupied">
+                        <div class="status-indicator"></div>
+                        <span>Đã đặt</span>
+                    </div>
+                    <div class="seat-status status-selected">
+                        <div class="status-indicator"></div>
+                        <span>Ghế đang chọn</span>
+                    </div>
+                </div>
+
+                <!-- Nút xác nhận -->
+                <div class="text-center mt-4">
+                    <button id="btnXacNhan" class="btn btn-danger btn-lg px-5 py-3" disabled>
+                        <i class="fas fa-check-circle me-2"></i>XÁC NHẬN ĐẶT VÉ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var selectedSeats = [];
+        var totalSeats = 0;
+        var currentXuatChieuId = null;
+
+        console.log("Page loaded, IDPhim: ", @Model.IDPhim);
+
+        // Hàm kiểm tra điều kiện đặt vé
+        function checkBookingConditions() {
+            var selectedRap = $('.table-custom tbody tr.selected').data('id');
+            var selectedDate = $('#ngayChieu').val();
+            var selectedTimeSlot = $('.time-slot.selected');
+            var selectedXuatChieuId = selectedTimeSlot.data('id');
+
+            var hasRap = !!selectedRap;
+            var hasDate = !!selectedDate;
+            var hasTime = !!selectedXuatChieuId;
+            var hasSeats = selectedSeats.length > 0;
+
+            if (hasRap && hasDate && hasTime && hasSeats) {
+                $('#btnXacNhan').prop('disabled', false);
+            } else {
+                $('#btnXacNhan').prop('disabled', true);
+            }
+        }
+
+        // Hàm format giờ từ TimeSpan
+        function formatTime(timeSpan) {
+            if (!timeSpan) return "";
+
+            if (typeof timeSpan === 'string') {
+                return timeSpan;
+            }
+
+            if (typeof timeSpan === 'object') {
+                // Xử lý đối tượng TimeSpan từ C#
+                var hours = timeSpan.Hours || timeSpan.hours || 0;
+                var minutes = timeSpan.Minutes || timeSpan.minutes || 0;
+                return ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+            }
+
+            return String(timeSpan);
+        }
+
+        // Hàm load ghế đã đặt
+        function loadGheDaDat(idXuatChieu) {
+            console.log("Loading ghế đã đặt cho: ", idXuatChieu);
+
+            $.ajax({
+                url: '@Url.Action("GetGheDaDat", "Cinema")',
+                type: 'GET',
+                data: { idXuatChieu: idXuatChieu },
+                success: function(response) {
+                    console.log("Ghế đã đặt response: ", response);
+                    if (response.success) {
+                        // Reset tất cả ghế
+                        $('.seat').removeClass('occupied').removeClass('selected');
+                        selectedSeats = [];
+                        totalSeats = 0;
+                        $('#soLuongGhe').val(0);
+
+                        // Đánh dấu các ghế đã đặt
+                        if (response.data && response.data.length > 0) {
+                            $.each(response.data, function(index, ghe) {
+                                console.log("Ghế đã đặt: ", ghe);
+                                $('.seat[data-seat="' + ghe + '"]').addClass('occupied');
+                            });
+                        }
+
+                        $('#chonGheContainer').show();
+                        checkBookingConditions();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error loading ghế: ", error);
+                    alert('Có lỗi xảy ra khi tải thông tin ghế!');
+                }
+            });
+        }
+
+        // Xử lý chọn rạp
+        $('.table-custom tbody tr').click(function() {
+            console.log("Rạp được chọn");
+            $('.table-custom tbody tr').removeClass('selected');
+            $(this).addClass('selected');
+
+            var selectedDate = $('#ngayChieu').val();
+            console.log("Ngày đã chọn: ", selectedDate);
+
+            if (selectedDate) {
+                $('#gioChieuContainer').show();
+                $('#loadingSuatChieu').show();
+                $('.time-slot-container').empty();
+
+                var rapId = $(this).data('id');
+                var phimId = @Model.IDPhim;
+
+                console.log("Gọi AJAX với: rapId=" + rapId + ", phimId=" + phimId + ", ngayChieu=" + selectedDate);
+
+                $.ajax({
+                    url: '@Url.Action("GetSuatChieuByRapAndDate", "Cinema")',
+                    type: 'GET',
+                    data: {
+                        idRap: rapId,
+                        idPhim: phimId,
+                        ngayChieu: selectedDate
+                    },
+                    success: function(response) {
+                        $('#loadingSuatChieu').hide();
+                        console.log("AJAX response: ", response);
+
+                        if (response.success && response.data && response.data.length > 0) {
+                            $('.time-slot-container').empty();
+
+                            $.each(response.data, function(index, suatChieu) {
+                                console.log("Suất chiếu: ", suatChieu);
+
+                                var gioChieuFormatted = formatTime(suatChieu.GioChieu);
+                                var timeSlot = $('<div class="time-slot" data-time="' + gioChieuFormatted + '" data-id="' + suatChieu.IDXuatChieu + '">' +
+                                    '<div class="fw-bold">' + gioChieuFormatted + '</div>' +
+                                    '<small>Giá: ' + parseFloat(suatChieu.GiaVe).toLocaleString('vi-VN') + 'đ</small>' +
+                                    '</div>');
+
+                                timeSlot.click(function() {
+                                    console.log("Time slot clicked: ", $(this).data('id'));
+                                    if (!$(this).hasClass('disabled')) {
+                                        $('.time-slot').removeClass('selected');
+                                        $(this).addClass('selected');
+
+                                        currentXuatChieuId = $(this).data('id');
+                                        loadGheDaDat(currentXuatChieuId);
+                                    }
+                                });
+
+                                $('.time-slot-container').append(timeSlot);
+                            });
+                        } else {
+                            console.log("Không có suất chiếu");
+                            $('.time-slot-container').html('<div class="alert alert-warning w-100">Không có suất chiếu nào cho ngày này!</div>');
+                            $('#chonGheContainer').hide();
+                            $('#btnXacNhan').prop('disabled', true);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#loadingSuatChieu').hide();
+                        console.log("AJAX error: ", error);
+                        alert('Có lỗi xảy ra khi tải dữ liệu suất chiếu!');
+                    }
+                });
+            } else {
+                alert('Vui lòng chọn ngày trước!');
+            }
+        });
+
+        // Xử lý chọn ngày
+        $('#ngayChieu').change(function() {
+            var selectedDate = $(this).val();
+            var selectedRap = $('.table-custom tbody tr.selected');
+
+            console.log("Ngày thay đổi: ", selectedDate);
+
+            if (selectedDate && selectedRap.length > 0) {
+                selectedRap.click();
+            } else if (selectedDate) {
+                $('#gioChieuContainer').hide();
+                $('#chonGheContainer').hide();
+                $('#btnXacNhan').prop('disabled', true);
+            }
+        });
+
+        // Xử lý chọn ghế
+        $(document).on('click', '.seat', function() {
+            if ($(this).hasClass('occupied')) {
+                console.log("Ghế đã được đặt, không thể chọn");
+                return;
+            }
+
+            var seatNumber = $(this).data('seat');
+            console.log('Clicked seat:', seatNumber);
+
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                selectedSeats = selectedSeats.filter(seat => seat !== seatNumber);
+                console.log('Deselected seat:', seatNumber, 'Selected seats:', selectedSeats);
+            } else {
+                if (selectedSeats.length < 10) {
+                    $(this).addClass('selected');
+                    selectedSeats.push(seatNumber);
+                    console.log('Selected seat:', seatNumber, 'Selected seats:', selectedSeats);
+                } else {
+                    alert('Bạn chỉ có thể chọn tối đa 10 ghế!');
+                    return;
+                }
+            }
+
+            totalSeats = selectedSeats.length;
+            $('#soLuongGhe').val(totalSeats);
+            checkBookingConditions();
+        });
+
+        // Xử lý nút xác nhận
+        $('#btnXacNhan').click(function() {
+            var selectedRap = $('.table-custom tbody tr.selected').data('id');
+            var selectedDate = $('#ngayChieu').val();
+            var selectedTimeSlot = $('.time-slot.selected');
+            var selectedTime = selectedTimeSlot.data('time');
+            var selectedXuatChieuId = selectedTimeSlot.data('id');
+
+            console.log("Xác nhận đặt vé:", {
+                rạp: selectedRap,
+                ngày: selectedDate,
+                giờ: selectedTime,
+                xuấtChiếu: selectedXuatChieuId,
+                ghế: selectedSeats
+            });
+
+            if (!selectedRap || !selectedDate || !selectedTime || selectedSeats.length === 0) {
+                alert('Vui lòng chọn đầy đủ thông tin: rạp, ngày, giờ và ghế!');
+                return;
+            }
+
+            // Hiển thị loading
+            $(this).html('<i class="fas fa-spinner fa-spin me-2"></i>ĐANG XỬ LÝ...');
+            $(this).prop('disabled', true);
+
+            // Chuyển hướng đến trang thanh toán
+            var url = '@Url.Action("ThanhToan", "Cinema")' +
+                      '?idXuatChieu=' + selectedXuatChieuId +
+                      '&danhSachGhe=' + encodeURIComponent(selectedSeats.join(','));
+
+            // Thêm delay nhỏ để người dùng thấy loading
+            setTimeout(function() {
+                window.location.href = url;
+            }, 500);
+        });
+
+        // Set ngày mặc định là hôm nay
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+        $('#ngayChieu').val(today);
+        $('#ngayChieu').attr('min', today);
+
+        // Set ngày tối đa là 30 ngày sau
+        var maxDate = new Date();
+        maxDate.setDate(maxDate.getDate() + 30);
+        var maxdd = String(maxDate.getDate()).padStart(2, '0');
+        var maxmm = String(maxDate.getMonth() + 1).padStart(2, '0');
+        var maxyyyy = maxDate.getFullYear();
+        var maxDateStr = maxyyyy + '-' + maxmm + '-' + maxdd;
+        $('#ngayChieu').attr('max', maxDateStr);
+
+        console.log("Page initialization complete");
+    });
+</script>
