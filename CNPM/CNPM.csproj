@@ -309,6 +309,8 @@
     <Content Include="Views\Cinema\ThanhToan.cshtml" />
     <Content Include="Views\Phim\DangChieu.cshtml" />
     <Content Include="Views\Phim\SapChieu.cshtml" />
+    <Content Include="Views\Phim\Create.cshtml" />
+    <Content Include="Views\Phim\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
