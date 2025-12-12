@@ -1,0 +1,62 @@
+﻿@model phim.Models.RAP_PHIM
+
+@{
+    ViewBag.Title = "Xóa rạp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="container-fluid py-4" style="background-color:#111;">
+    <!-- TIÊU ĐỀ -->
+    <div class="text-center text-white py-3"
+         style="background-color:#7b0000; letter-spacing:2px; font-size:32px; font-weight:700;">
+        XÓA RẠP
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <div style="width:60%; max-width:700px; background-color:#333; padding:25px 35px;
+                    color:white; border-top:3px solid #a00000;">
+            <p class="mb-4" style="font-size:16px;">
+                Bạn có chắc chắn muốn <span style="color:#ff7675;font-weight:600;">xóa rạp này</span> không?
+            </p>
+
+            <table class="table table-borderless mb-4" style="color:white;">
+                <tr>
+                    <th style="width:30%;">Tên rạp:</th>
+                    <td>@Model.TenRap</td>
+                </tr>
+                <tr>
+                    <th>Địa chỉ:</th>
+                    <td>@Model.DiaChi</td>
+                </tr>
+                <tr>
+                    <th>Số điện thoại:</th>
+                    <td>@Model.SoDienThoai</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>@Model.Email</td>
+                </tr>
+            </table>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn"
+                            style="background-color:#c0392b;color:white;padding:8px 32px;border-radius:0;margin-right:10px;">
+                        <i class="fa-solid fa-trash"></i> Xóa
+                    </button>
+
+                    <a href="@Url.Action("Index","RapPhim")" class="btn"
+                       style="background-color:#555;color:white;padding:8px 28px;border-radius:0;">
+                        Hủy
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

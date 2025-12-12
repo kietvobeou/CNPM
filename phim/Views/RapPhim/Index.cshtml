@@ -1,0 +1,56 @@
+﻿@model IEnumerable<phim.Models.RAP_PHIM>
+
+@{
+    ViewBag.Title = "Danh sách rạp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="container-fluid py-4" style="background-color:#111;">
+    <div class="text-center text-white py-3"
+         style="background-color:#7b0000; letter-spacing:2px; font-size:32px; font-weight:700;">
+        DANH SÁCH RẠP
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <table class="table mb-0" style="width:80%; color:white; background-color:#333;">
+            <thead>
+                <tr style="background-color:#111; text-transform:uppercase;">
+                    <th class="text-center">Tên Rạp</th>
+                    <th class="text-center">Địa Chỉ</th>
+                    <th class="text-center">Số Điện Thoại</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Chức Năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr style="background-color:#555; border-top:2px solid #a00000;">
+                        <td class="text-center">@item.TenRap</td>
+                        <td class="text-center">@item.DiaChi</td>
+                        <td class="text-center">@item.SoDienThoai</td>
+                        <td class="text-center">@item.Email</td>
+                        <td class="text-center">
+                            <a href="@Url.Action("Edit", "RapPhim", new { id = item.IDRap })" class="me-3">
+                                <i class="fa-solid fa-pen" style="color:white;"></i>
+                            </a>
+                            <a href="@Url.Action("Delete", "RapPhim", new { id = item.IDRap })">
+                                <i class="fa-solid fa-trash" style="color:#c0392b;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="@Url.Action("Create","RapPhim")" class="btn"
+           style="background-color:#7b0000; color:white; padding:8px 32px; border-radius:0;">
+            Thêm Rạp
+        </a>
+    </div>
+</div>

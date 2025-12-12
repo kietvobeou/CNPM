@@ -1,0 +1,50 @@
+﻿@model phim.Models.PHONG_CHIEU
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PHONG_CHIEU</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TenPhong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenPhong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoLuongGhe)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoLuongGhe)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoaiPhong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoaiPhong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RAP_PHIM.TenRap)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RAP_PHIM.TenRap)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDPhong }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

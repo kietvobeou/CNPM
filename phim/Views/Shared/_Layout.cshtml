@@ -1,0 +1,264 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - N13 Cinema</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* ====== TOP BAR ====== */
+        .n13-topbar {
+            background-color: #000;
+            border-bottom: 1px solid #444;
+        }
+
+        .n13-topbar-inner {
+            max-width: 1150px;
+            margin: 0 auto;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .n13-logo {
+            color: #e21818;
+            font-weight: 800;
+            letter-spacing: 3px;
+            font-size: 22px;
+        }
+
+            .n13-logo span {
+                color: #fff;
+                font-size: 12px;
+                margin-left: 4px;
+            }
+
+        /* ====== NAV ====== */
+        .n13-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 28px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+            .n13-menu > li > a,
+            .n13-menu > li > .dropdown-toggle {
+                color: #f5f5f5;
+                text-decoration: none;
+            }
+
+                .n13-menu > li > a:hover,
+                .n13-menu > li > .dropdown-toggle:hover {
+                    color: #e21818;
+                }
+
+            /* dropdown list */
+            .n13-menu .dropdown {
+                position: relative;
+            }
+
+            .n13-menu .dropdown-menu {
+                background-color: #000;
+                border: 1px solid #444;
+                min-width: 150px;
+            }
+
+                .n13-menu .dropdown-menu > li > a {
+                    color: #f5f5f5;
+                    font-size: 13px;
+                    display: block;
+                    padding: 6px 12px;
+                    text-decoration: none;
+                }
+
+                    .n13-menu .dropdown-menu > li > a:hover {
+                        background-color: #111;
+                        color: #e21818;
+                    }
+
+            /* mở menu khi hover (ngoài ra bootstrap vẫn hỗ trợ click) */
+            .n13-menu .dropdown:hover > .dropdown-menu {
+                display: block;
+            }
+
+        /* ====== BODY WRAPPER ====== */
+        .n13-body-wrapper {
+            min-height: calc(100vh - 60px - 150px); /* trừ header + footer */
+            padding: 30px 0 40px 0;
+        }
+
+        .n13-body-inner {
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        .container-fluid {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* ====== FOOTER ====== */
+        .n13-footer {
+            background-color: #000;
+            border-top: 1px solid #444;
+            padding: 30px 0 15px 0;
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        .n13-footer-inner {
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        .n13-footer-title {
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+        .n13-footer a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+            .n13-footer a:hover {
+                color: #ffffff;
+            }
+
+        .n13-footer-logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: #e21818;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .n13-footer-icon {
+            width: 20px;
+            display: inline-block;
+        }
+
+        .n13-footer-bottom {
+            text-align: center;
+            color: #777;
+            font-size: 11px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP BAR -->
+    <div class="n13-topbar">
+        <div class="n13-topbar-inner">
+            <div class="n13-logo">
+                N13 <span>CINEMA</span>
+            </div>
+
+            <ul class="n13-menu">
+                <li>
+                    @Html.ActionLink("Vé của tôi", "Index", "Home")
+                </li>
+
+                <!-- DROPDOWN QUẢN LÝ -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">
+                        Quản lý <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="@Url.Action("Index", "RapPhim")">Rạp phim</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "PhongChieu")">Phòng chiếu</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li><a href="#">Báo Cáo</a></li>
+                <li><a href="#">Tin Tức</a></li>
+                <li><a href="#">Đăng Xuất</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="n13-body-wrapper">
+        <div class="n13-body-inner">
+            @RenderBody()
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="n13-footer">
+        <div class="n13-footer-inner">
+            <div class="row">
+                <!-- Cột 1: Logo -->
+                <div class="col-md-3 col-sm-3">
+                    <div class="n13-footer-logo">N13</div>
+                    <div>Hệ thống đặt vé xem phim trực tuyến.</div>
+                </div>
+
+                <!-- Cột 2: Tài khoản -->
+                <div class="col-md-3 col-sm-3">
+                    <div class="n13-footer-title">Tài khoản</div>
+                    <a href="#">Đăng Nhập</a>
+                    <a href="#">Đăng Ký</a>
+                </div>
+
+                <!-- Cột 3: Kết nối -->
+                <div class="col-md-3 col-sm-3">
+                    <div class="n13-footer-title">Kết nối</div>
+                    <a href="#"><span class="n13-footer-icon"><i class="fab fa-facebook-f"></i></span> Facebook</a>
+                    <a href="#"><span class="n13-footer-icon"><i class="fab fa-instagram"></i></span> Instagram</a>
+                    <a href="#"><span class="n13-footer-icon"><i class="fab fa-youtube"></i></span> Youtube</a>
+                </div>
+
+                <!-- Cột 4: Chăm sóc khách hàng -->
+                <div class="col-md-3 col-sm-3">
+                    <div class="n13-footer-title">Chăm sóc khách hàng</div>
+                    <div>Hotline: 1900 6017</div>
+                    <div>Giờ làm việc: 8:00 – 22:00<br />(Tất cả các ngày)</div>
+                    <div style="margin-top:8px;">Email: hoidap@gmail.com</div>
+                </div>
+            </div>
+
+            <div class="n13-footer-bottom">
+                © @DateTime.Now.Year - N13 Cinema. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
