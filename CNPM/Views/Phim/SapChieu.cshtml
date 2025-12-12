@@ -1,0 +1,111 @@
+﻿
+
+@{
+    ViewBag.Title = "SapChieu";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+
+<style>
+    .movie-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+    .movie-image-container {
+        position: relative;
+    }
+
+    .movie-img {
+        width: 100%;
+        height: 330px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .movie-overlay {
+        position: absolute;
+        bottom: -70px;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        align-items: center;
+        transition: bottom 0.3s ease;
+    }
+
+    .movie-card:hover .movie-overlay {
+        bottom: 0;
+    }
+
+    .movie-detail-btn {
+        border: none;
+        padding: 8px 14px;
+        font-size: 14px;
+        border-radius: 6px;
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .movie-admin-btn {
+        padding: 8px 14px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: none;
+    }
+</style>
+
+
+<div class="container mt-5">
+    <h2 class="text-white mb-4">PHIM SẮP CHIẾU</h2>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="movie-card">
+                    <div class="movie-image-container">
+
+                        <img src="~/Content/HinhAnh/@item.AnhBia"
+                             alt="@item.TenPhim"
+                             class="movie-img" />
+
+                        <div class="movie-overlay">
+
+                            <!-- Nút xem chi tiết -->
+                            <button class="movie-detail-btn"
+                                    onclick="location.href='@Url.Action("ChiTiet", "Cinema", new { id = item.IDPhim })'">
+                                Chi Tiết
+                            </button>
+
+
+                            <!-- Nếu ADMIN thì thêm sửa/xóa -->
+                            @if (Session["UserRole"] != null && Session["UserRole"].ToString() == "admin")
+                            {
+                                <button class="movie-admin-btn btn-warning"
+                                        onclick="location.href='@Url.Action("Edit", "Phim", new { id = item.IDPhim })'">
+                                    Sửa
+                                </button>
+
+                                <button class="movie-admin-btn btn-danger"
+                                        onclick="location.href='@Url.Action("Delete", "Phim", new { id = item.IDPhim })'">
+                                    Xóa
+                                </button>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

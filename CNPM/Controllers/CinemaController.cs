@@ -16,13 +16,13 @@ namespace CNPM.Controllers
         // GET: Cinema/Index
         public ActionResult Index()
         {
-            ViewBag.PhimSC = db.PHIMs
+            ViewBag.PhimSC = db.PHIM
              .Where(p => p.TrangThai == "Sắp chiếu")
              .OrderBy(r => Guid.NewGuid())
              .Take(4)
              .ToList();
 
-            ViewBag.PhimDC = db.PHIMs
+            ViewBag.PhimDC = db.PHIM
                 .Where(p => p.TrangThai == "Đang chiếu")
                 .OrderBy(r => Guid.NewGuid())
                 .Take(4)
@@ -34,11 +34,14 @@ namespace CNPM.Controllers
                 .ToList();
             return View();
         }
+        
+       
+
 
         // GET: Cinema/ChiTiet/1
         public ActionResult ChiTiet(int id)
         {
-            var phim = db.PHIMs.FirstOrDefault(s => s.IDPhim == id);
+            var phim = db.PHIM.FirstOrDefault(s => s.IDPhim == id);
             List<BINH_LUAN> bl = db.BINH_LUAN.Where(s => s.IDPhim == id).ToList();
             ViewBag.bl = bl;
             return View(phim);
@@ -47,7 +50,7 @@ namespace CNPM.Controllers
         // GET: Cinema/DatVe/1
         public ActionResult DatVe(int id)
         {
-            var phim = db.PHIMs.Find(id);
+            var phim = db.PHIM.Find(id);
             if (phim == null)
             {
                 return HttpNotFound();
@@ -340,6 +343,15 @@ namespace CNPM.Controllers
             public string TenRap { get; set; }
             public string DiaChi { get; set; }
             public string TenPhim { get; set; }
+            public int ThoiLuong { get; set; }
+        }
+
+        public class PHIM
+        {
+            public int IDPhim { get; set; }
+            public string TenPhim { get; set; }
+            public string TrangThai { get; set; }
+            // Thêm các thuộc tính khác nếu cần
             public int ThoiLuong { get; set; }
         }
     }

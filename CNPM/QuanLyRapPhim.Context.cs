@@ -29,7 +29,7 @@ namespace CNPM
         public DbSet<CT_DATVE> CT_DATVE { get; set; }
         public DbSet<DON_DAT_VE> DON_DAT_VE { get; set; }
         public DbSet<KHACH_HANG> KHACH_HANG { get; set; }
-        public DbSet<PHIM> PHIMs { get; set; }
+        public DbSet<PHIM> PHIM { get; set; }
         public DbSet<PHONG_CHIEU> PHONG_CHIEU { get; set; }
         public DbSet<RAP_PHIM> RAP_PHIM { get; set; }
         public DbSet<TAI_KHOAN> TAI_KHOAN { get; set; }

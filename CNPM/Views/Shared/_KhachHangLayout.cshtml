@@ -13,7 +13,7 @@
 </head>
 <body>
     <header class="header-container">
-        <a href="@Url.Action("Index", "Home")" class="logo-link">
+        <a href="@Url.Action("Index", "")" class="logo-link">
             <img src="~/Content/HinhAnh/logo.svg" alt="N13 Cinema Logo" class="logo-img" width="100">
         </a>
 
@@ -22,10 +22,10 @@
                 <a href="@Url.Action("MyTickets", "Account")" class="nav-link">Vé của tôi</a>
             </div>
             <div class="nav-item">
-                <a href="@Url.Action("NowShowing", "Movies")" class="nav-link">Phim đang chiếu</a>
+                <a href="@Url.Action("DangChieu", "Phim")" class="nav-link">Phim đang chiếu</a>
             </div>
             <div class="nav-item">
-                <a href="@Url.Action("ComingSoon", "Movies")" class="nav-link">Phim sắp chiếu</a>
+                <a href="@Url.Action("SapChieu", "Phim")" class="nav-link">Phim sắp chiếu</a>
             </div>
             <div class="nav-item">
                 <a href="@Url.Action("Index", "News")" class="nav-link">Tin tức</a>
