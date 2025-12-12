@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "Đăng Nhập";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+
+<style>
+    .login-background {
+        background-image: url('https://res.cloudinary.com/dxy81jyw2/image/upload/v1765469418/6dbf64af2a7b6735b7d428514975c425ff5cc8dc_wdghli.png'); /* Ảnh minh họa rạp phim tối */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .login-overlay {
+        background-color: rgba(0, 0, 0, 0.7); 
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+
+    .login-box {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 500px;
+        border: 1px solid rgba(255, 255, 255, 0.3); 
+        border-radius: 15px;
+        padding: 0;
+        background-color: rgba(0, 0, 0, 0.5); 
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+
+    .auth-tabs {
+        display: flex;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .auth-tab-item {
+        flex: 1;
+        text-align: center;
+        padding: 20px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+        .auth-tab-item:hover {
+            color: #dc3545; 
+            text-decoration: none;
+        }
+
+        .auth-tab-item.active {
+            border-bottom: 3px solid #b30000; 
+            color: #fff;
+        }
+
+        .auth-tab-item.inactive {
+            color: #888; 
+        }
+
+
+    .login-form-content {
+        padding: 40px;
+    }
+
+    .form-label {
+        color: #ddd;
+        margin-bottom: 10px;
+        display: block;
+        font-size: 16px;
+    }
+
+    .custom-input {
+        width: 100%;
+        padding: 12px 20px;
+        border-radius: 30px; 
+        border: none;
+        background-color: #e0e0e0; 
+        margin-bottom: 20px;
+        font-size: 14px;
+        outline: none;
+    }
+
+        .custom-input:focus {
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+
+    .btn-login-red {
+        background-color: #8B0000; 
+        color: white;
+        padding: 10px 40px;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background 0.3s;
+        margin-top: 10px;
+    }
+
+        .btn-login-red:hover {
+            background-color: #b30000;
+        }
+
+
+    .alert-custom {
+        background-color: rgba(220, 53, 69, 0.2);
+        color: #ff6b6b;
+        border: 1px solid #dc3545;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+</style>
+
+<div class="login-background">
+    <div class="login-overlay"></div>
+
+    <div class="login-box">
+        <div class="auth-tabs">
+            <a href="javascript:void(0);" class="auth-tab-item active">ĐĂNG NHẬP</a>
+            <a href="@Url.Action("Register", "Account")" class="auth-tab-item inactive">ĐĂNG KÝ</a>
+        </div>
+
+        <div class="login-form-content">
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert-custom">
+                    @ViewBag.Error
+                </div>
+            }
+
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+            {
+                <div class="form-group">
+                    <label class="form-label">Số điện thoại hoặc email</label>
+                    <input type="text" name="username" class="custom-input" placeholder="Nhập tài khoản..." required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" name="password" class="custom-input" placeholder="Nhập mật khẩu..." required />
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-login-red">Đăng Nhập</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

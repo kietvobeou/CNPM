@@ -10,26 +10,21 @@
 namespace CNPM
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class DON_DAT_VE
+    public partial class sp_GetChiTietDonVe_Result
     {
-        public DON_DAT_VE()
-        {
-            this.CT_DATVE = new HashSet<CT_DATVE>();
-            this.THANH_TOAN = new HashSet<THANH_TOAN>();
-        }
-    
         public int IDDonDatVe { get; set; }
         public int IDKhachHang { get; set; }
         public int IDXuatChieu { get; set; }
         public Nullable<System.DateTime> NgayDat { get; set; }
         public string TrangThaiDatVe { get; set; }
         public Nullable<decimal> TongTien { get; set; }
-    
-        public virtual ICollection<CT_DATVE> CT_DATVE { get; set; }
-        public virtual KHACH_HANG KHACH_HANG { get; set; }
-        public virtual XUAT_CHIEU XUAT_CHIEU { get; set; }
-        public virtual ICollection<THANH_TOAN> THANH_TOAN { get; set; }
+        public string ViTriGhe { get; set; }
+        public decimal Gia { get; set; }
+        public string TenPhim { get; set; }
+        public System.DateTime NgayChieu { get; set; }
+        public System.TimeSpan GioChieu { get; set; }
+        public string TenPhong { get; set; }
+        public string TenRap { get; set; }
     }
 }

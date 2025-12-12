@@ -1,0 +1,188 @@
+﻿@model CNPM.Models.HistoryTicketViewModel
+@{
+    ViewBag.Title = "Thông Tin Vé";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+
+<style>
+
+    .ticket-detail-page {
+        background-color: #1a1a1a;
+        min-height: 100vh;
+        color: #fff;
+        padding-bottom: 50px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .detail-header-bar {
+        background-color: #720000;
+        padding: 20px 0;
+        text-align: center;
+        margin-bottom: 50px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .detail-header-bar h1 {
+        margin: 0;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #fff;
+        font-size: 32px;
+        letter-spacing: 1px;
+    }
+
+
+    .detail-container {
+        display: flex;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+        gap: 50px; 
+        align-items: flex-start;
+    }
+
+    .info-column {
+        flex: 1;
+    }
+
+    .movie-title {
+        font-size: 28px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+        color: #e0e0e0;
+        letter-spacing: 0.5px;
+    }
+
+    .info-row {
+        margin-bottom: 25px;
+        font-size: 16px;
+        color: #cccccc;
+    }
+
+    .info-label {
+        display: inline-block;
+        width: 120px; 
+    }
+
+    .info-value {
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .poster-column {
+        width: 300px;
+        flex-shrink: 0;
+    }
+
+    .poster-img {
+        width: 100%;
+        border-radius: 5px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.7);
+        border: 1px solid #333;
+    }
+
+
+    .button-group {
+        max-width: 900px;
+        margin: 50px auto 0;
+        padding: 0 20px;
+        display: flex;
+        justify-content: center; 
+        gap: 200px; 
+    }
+
+    .btn-action {
+        background-color: #720000;
+        color: white;
+        padding: 12px 40px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .btn-action:hover {
+        background-color: #900;
+        color: #fff;
+        text-decoration: none;
+    }
+
+
+    @@media (max-width: 768px) {
+        .detail-container {
+            flex-direction: column-reverse; 
+            align-items: center;
+        }
+        .poster-column { margin-bottom: 30px; }
+        .button-group { gap: 20px; }
+    }
+</style>
+
+<div class="ticket-detail-page">
+
+    <div class="detail-header-bar">
+        <h1>THÔNG TIN VÉ</h1>
+    </div>
+
+    <div class="detail-container">
+        <div class="info-column">
+            <div class="movie-title">@Model.TenPhim</div>
+
+            <div class="info-row">
+                <span class="info-label">Ngày chiếu:</span>
+                <span class="info-value">@Model.NgayChieu.ToString("dd/MM/yyyy")</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Suất chiếu:</span>
+                <span class="info-value">@Model.GioChieu.ToString(@"hh\:mm")</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Rạp chiếu:</span>
+                <span class="info-value">@Model.TenRap</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Phòng chiếu:</span>
+                <span class="info-value">@Model.TenPhong</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Ghế:</span>
+                <span class="info-value">@Model.ChuoiGhe</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Trạng thái:</span>
+                <span class="info-value" style="color: @(Model.TrangThai == "Đã hủy" ? "#ff4d4d" : "#4dff4d")">
+                    @Model.TrangThai
+                </span>
+            </div>
+        </div>
+
+        <div class="poster-column">
+            <img src="~/Content/Images/@Model.AnhBia" alt="@Model.TenPhim" class="poster-img" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'" />
+        </div>
+    </div>
+
+    <div class="button-group">
+        <a href="@Url.Action("MyTickets", "Account")" class="btn-action">Quay Lại</a>
+
+        @if (Model.TrangThai != "Đã hủy" && Model.NgayChieu.Add(Model.GioChieu) > DateTime.Now)
+        {
+            using (Html.BeginForm("CancelTicket", "Account", new { id = Model.IDDonDatVe }, FormMethod.Post))
+            {
+                <button type="submit" class="btn-action" onclick="return confirm('Bạn có chắc chắn muốn hủy vé này không?');">
+                    Hủy Vé
+                </button>
+            }
+        }
+    </div>
+</div>

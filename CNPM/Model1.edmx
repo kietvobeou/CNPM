@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QuanLyRapPhimModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QuanLyRapPhimModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BINH_LUAN">
           <Key>
             <PropertyRef Name="IDBinhLuan" />
@@ -92,6 +92,16 @@
           <Property Name="Loai" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="TrangThai" Type="bit" />
           <Property Name="NgayTao" Type="datetime" />
+        </EntityType>
+        <EntityType Name="THANH_TOAN">
+          <Key>
+            <PropertyRef Name="IDThanhToan" />
+          </Key>
+          <Property Name="IDThanhToan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDDonDatVe" Type="int" Nullable="false" />
+          <Property Name="PhuongThuc" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="20" />
+          <Property Name="NgayThanhToan" Type="datetime" />
         </EntityType>
         <EntityType Name="TIN_TUC">
           <Key>
@@ -186,6 +196,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__THANH_TOA__IDDon__6383C8BA">
+          <End Role="DON_DAT_VE" Type="Self.DON_DAT_VE" Multiplicity="1" />
+          <End Role="THANH_TOAN" Type="Self.THANH_TOAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DON_DAT_VE">
+              <PropertyRef Name="IDDonDatVe" />
+            </Principal>
+            <Dependent Role="THANH_TOAN">
+              <PropertyRef Name="IDDonDatVe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__XUAT_CHIE__IDPhi__4CA06362">
           <End Role="PHIM" Type="Self.PHIM" Multiplicity="1" />
           <End Role="XUAT_CHIEU" Type="Self.XUAT_CHIEU" Multiplicity="*" />
@@ -210,6 +232,74 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_DangKyTaiKhoan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDKhachHang" Type="int" Mode="In" />
+          <Parameter Name="TenDangNhap" Type="varchar" Mode="In" />
+          <Parameter Name="MatKhau" Type="varchar" Mode="In" />
+          <Parameter Name="Loai" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_DangNhap" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TenDangNhap" Type="varchar" Mode="In" />
+          <Parameter Name="MatKhau" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_DatVe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDKhachHang" Type="int" Mode="In" />
+          <Parameter Name="IDXuatChieu" Type="int" Mode="In" />
+          <Parameter Name="DanhSachGhe" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_DoiMatKhau" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDTaiKhoan" Type="int" Mode="In" />
+          <Parameter Name="MatKhauMoi" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_GetBinhLuanTheoPhim" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDPhim" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetChiTietDonVe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDDonDatVe" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetPhongChieuByRap" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDRap" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetTinTucMoiNhat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SoLuong" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetVeCuaToi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDKhachHang" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_HuyDonVe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDDonDatVe" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_HuyVeCuaToi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDDonDatVe" Type="int" Mode="In" />
+          <Parameter Name="IDKhachHang" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_KhoaTaiKhoan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDTaiKhoan" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_KiemTraGheDaDat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDXuatChieu" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_MoKhoaTaiKhoan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDTaiKhoan" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ThanhToanDonVe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDDonDatVe" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemBinhLuan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDPhim" Type="int" Mode="In" />
+          <Parameter Name="TenNguoiBinhLuan" Type="nvarchar" Mode="In" />
+          <Parameter Name="NoiDung" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="SoSao" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ThongKeDoanhThu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TuNgay" Type="date" Mode="In" />
+          <Parameter Name="DenNgay" Type="date" Mode="In" />
+          <Parameter Name="IDRap" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_TimKhachHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="SoDienThoai" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="QuanLyRapPhimModelStoreContainer">
           <EntitySet Name="BINH_LUAN" EntityType="Self.BINH_LUAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CT_DATVE" EntityType="Self.CT_DATVE" Schema="dbo" store:Type="Tables" />
@@ -219,6 +309,7 @@
           <EntitySet Name="PHONG_CHIEU" EntityType="Self.PHONG_CHIEU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RAP_PHIM" EntityType="Self.RAP_PHIM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TAI_KHOAN" EntityType="Self.TAI_KHOAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="THANH_TOAN" EntityType="Self.THANH_TOAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TIN_TUC" EntityType="Self.TIN_TUC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="XUAT_CHIEU" EntityType="Self.XUAT_CHIEU" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__BINH_LUAN__IDPhi__5BE2A6F2" Association="Self.FK__BINH_LUAN__IDPhi__5BE2A6F2">
@@ -245,6 +336,10 @@
             <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
             <End Role="TAI_KHOAN" EntitySet="TAI_KHOAN" />
           </AssociationSet>
+          <AssociationSet Name="FK__THANH_TOA__IDDon__6383C8BA" Association="Self.FK__THANH_TOA__IDDon__6383C8BA">
+            <End Role="DON_DAT_VE" EntitySet="DON_DAT_VE" />
+            <End Role="THANH_TOAN" EntitySet="THANH_TOAN" />
+          </AssociationSet>
           <AssociationSet Name="FK__XUAT_CHIE__IDPhi__4CA06362" Association="Self.FK__XUAT_CHIE__IDPhi__4CA06362">
             <End Role="PHIM" EntitySet="PHIM" />
             <End Role="XUAT_CHIEU" EntitySet="XUAT_CHIEU" />
@@ -254,8 +349,7 @@
             <End Role="XUAT_CHIEU" EntitySet="XUAT_CHIEU" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QuanLyRapPhimModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -294,6 +388,7 @@
           <NavigationProperty Name="CT_DATVE" Relationship="Self.FK__CT_DATVE__IDDonD__571DF1D5" FromRole="DON_DAT_VE" ToRole="CT_DATVE" />
           <NavigationProperty Name="KHACH_HANG" Relationship="Self.FK__DON_DAT_V__IDKha__534D60F1" FromRole="DON_DAT_VE" ToRole="KHACH_HANG" />
           <NavigationProperty Name="XUAT_CHIEU" Relationship="Self.FK__DON_DAT_V__IDXua__5441852A" FromRole="DON_DAT_VE" ToRole="XUAT_CHIEU" />
+          <NavigationProperty Name="THANH_TOAN" Relationship="Self.FK__THANH_TOA__IDDon__6383C8BA" FromRole="DON_DAT_VE" ToRole="THANH_TOAN" />
         </EntityType>
         <EntityType Name="KHACH_HANG">
           <Key>
@@ -359,6 +454,17 @@
           <Property Name="TrangThai" Type="Boolean" />
           <Property Name="NgayTao" Type="DateTime" Precision="3" />
           <NavigationProperty Name="KHACH_HANG" Relationship="Self.FK__TAI_KHOAN__IDKha__412EB0B6" FromRole="TAI_KHOAN" ToRole="KHACH_HANG" />
+        </EntityType>
+        <EntityType Name="THANH_TOAN">
+          <Key>
+            <PropertyRef Name="IDThanhToan" />
+          </Key>
+          <Property Name="IDThanhToan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDDonDatVe" Type="Int32" Nullable="false" />
+          <Property Name="PhuongThuc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TrangThai" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NgayThanhToan" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DON_DAT_VE" Relationship="Self.FK__THANH_TOA__IDDon__6383C8BA" FromRole="THANH_TOAN" ToRole="DON_DAT_VE" />
         </EntityType>
         <EntityType Name="TIN_TUC">
           <Key>
@@ -432,6 +538,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__THANH_TOA__IDDon__6383C8BA">
+          <End Role="DON_DAT_VE" Type="Self.DON_DAT_VE" Multiplicity="1" />
+          <End Role="THANH_TOAN" Type="Self.THANH_TOAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DON_DAT_VE">
+              <PropertyRef Name="IDDonDatVe" />
+            </Principal>
+            <Dependent Role="THANH_TOAN">
+              <PropertyRef Name="IDDonDatVe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__TAI_KHOAN__IDKha__412EB0B6">
           <End Role="KHACH_HANG" Type="Self.KHACH_HANG" Multiplicity="0..1" />
           <End Role="TAI_KHOAN" Type="Self.TAI_KHOAN" Multiplicity="*" />
@@ -489,6 +607,7 @@
           <EntitySet Name="PHONG_CHIEU" EntityType="Self.PHONG_CHIEU" />
           <EntitySet Name="RAP_PHIM" EntityType="Self.RAP_PHIM" />
           <EntitySet Name="TAI_KHOAN" EntityType="Self.TAI_KHOAN" />
+          <EntitySet Name="THANH_TOAN" EntityType="Self.THANH_TOAN" />
           <EntitySet Name="TIN_TUC" EntityType="Self.TIN_TUC" />
           <EntitySet Name="XUAT_CHIEU" EntityType="Self.XUAT_CHIEU" />
           <AssociationSet Name="FK__BINH_LUAN__IDPhi__5BE2A6F2" Association="Self.FK__BINH_LUAN__IDPhi__5BE2A6F2">
@@ -507,6 +626,10 @@
             <End Role="XUAT_CHIEU" EntitySet="XUAT_CHIEU" />
             <End Role="DON_DAT_VE" EntitySet="DON_DAT_VE" />
           </AssociationSet>
+          <AssociationSet Name="FK__THANH_TOA__IDDon__6383C8BA" Association="Self.FK__THANH_TOA__IDDon__6383C8BA">
+            <End Role="DON_DAT_VE" EntitySet="DON_DAT_VE" />
+            <End Role="THANH_TOAN" EntitySet="THANH_TOAN" />
+          </AssociationSet>
           <AssociationSet Name="FK__TAI_KHOAN__IDKha__412EB0B6" Association="Self.FK__TAI_KHOAN__IDKha__412EB0B6">
             <End Role="KHACH_HANG" EntitySet="KHACH_HANG" />
             <End Role="TAI_KHOAN" EntitySet="TAI_KHOAN" />
@@ -523,7 +646,151 @@
             <End Role="PHONG_CHIEU" EntitySet="PHONG_CHIEU" />
             <End Role="XUAT_CHIEU" EntitySet="XUAT_CHIEU" />
           </AssociationSet>
+          <FunctionImport Name="sp_DangKyTaiKhoan">
+            <Parameter Name="IDKhachHang" Mode="In" Type="Int32" />
+            <Parameter Name="TenDangNhap" Mode="In" Type="String" />
+            <Parameter Name="MatKhau" Mode="In" Type="String" />
+            <Parameter Name="Loai" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_DangNhap" ReturnType="Collection(QuanLyRapPhimModel.sp_DangNhap_Result)">
+            <Parameter Name="TenDangNhap" Mode="In" Type="String" />
+            <Parameter Name="MatKhau" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_DatVe" ReturnType="Collection(QuanLyRapPhimModel.sp_DatVe_Result)">
+            <Parameter Name="IDKhachHang" Mode="In" Type="Int32" />
+            <Parameter Name="IDXuatChieu" Mode="In" Type="Int32" />
+            <Parameter Name="DanhSachGhe" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_DoiMatKhau">
+            <Parameter Name="IDTaiKhoan" Mode="In" Type="Int32" />
+            <Parameter Name="MatKhauMoi" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetBinhLuanTheoPhim" ReturnType="Collection(QuanLyRapPhimModel.sp_GetBinhLuanTheoPhim_Result)">
+          <Parameter Name="IDPhim" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetChiTietDonVe" ReturnType="Collection(QuanLyRapPhimModel.sp_GetChiTietDonVe_Result)">
+          <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetPhongChieuByRap" ReturnType="Collection(QuanLyRapPhimModel.sp_GetPhongChieuByRap_Result)">
+          <Parameter Name="IDRap" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetTinTucMoiNhat" ReturnType="Collection(QuanLyRapPhimModel.sp_GetTinTucMoiNhat_Result)">
+          <Parameter Name="SoLuong" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_HuyDonVe">
+          <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_KhoaTaiKhoan">
+          <Parameter Name="IDTaiKhoan" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_KiemTraGheDaDat" ReturnType="Collection(String)">
+          <Parameter Name="IDXuatChieu" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_MoKhoaTaiKhoan">
+          <Parameter Name="IDTaiKhoan" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThanhToanDonVe">
+          <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemBinhLuan">
+            <Parameter Name="IDPhim" Mode="In" Type="Int32" />
+            <Parameter Name="TenNguoiBinhLuan" Mode="In" Type="String" />
+            <Parameter Name="NoiDung" Mode="In" Type="String" />
+            <Parameter Name="SoSao" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThongKeDoanhThu" ReturnType="Collection(QuanLyRapPhimModel.sp_ThongKeDoanhThu_Result)">
+            <Parameter Name="TuNgay" Mode="In" Type="DateTime" />
+            <Parameter Name="DenNgay" Mode="In" Type="DateTime" />
+            <Parameter Name="IDRap" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_TimKhachHang" ReturnType="Collection(QuanLyRapPhimModel.sp_TimKhachHang_Result)">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="SoDienThoai" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetVeCuaToi" ReturnType="Collection(QuanLyRapPhimModel.sp_GetVeCuaToi_Result)">
+          <Parameter Name="IDKhachHang" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_HuyVeCuaToi" ReturnType="Collection(Int32)">
+            <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
+            <Parameter Name="IDKhachHang" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="sp_DangNhap_Result">
+          <Property Type="Int32" Name="IDTaiKhoan" Nullable="false" />
+          <Property Type="String" Name="TenDangNhap" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Loai" Nullable="false" MaxLength="10" />
+          <Property Type="Boolean" Name="TrangThai" Nullable="true" />
+          <Property Type="DateTime" Name="NgayTao" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="IDKhachHang" Nullable="true" />
+          <Property Type="String" Name="HoTen" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="SoDienThoai" Nullable="true" MaxLength="15" />
+        </ComplexType>
+        <ComplexType Name="sp_DatVe_Result">
+          <Property Type="Int32" Name="IDDonDatVe" Nullable="true" />
+          <Property Type="Decimal" Name="TongTien" Nullable="true" Precision="10" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="sp_GetBinhLuanTheoPhim_Result">
+          <Property Type="Int32" Name="IDBinhLuan" Nullable="false" />
+          <Property Type="Int32" Name="IDPhim" Nullable="false" />
+          <Property Type="String" Name="TenNguoiBinhLuan" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="NgayBinhLuan" Nullable="true" Precision="23" />
+          <Property Type="String" Name="NoiDung" Nullable="false" />
+          <Property Type="Int32" Name="SoSao" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_GetChiTietDonVe_Result">
+          <Property Type="Int32" Name="IDDonDatVe" Nullable="false" />
+          <Property Type="Int32" Name="IDKhachHang" Nullable="false" />
+          <Property Type="Int32" Name="IDXuatChieu" Nullable="false" />
+          <Property Type="DateTime" Name="NgayDat" Nullable="true" Precision="23" />
+          <Property Type="String" Name="TrangThaiDatVe" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="TongTien" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="String" Name="ViTriGhe" Nullable="false" MaxLength="10" />
+          <Property Type="Decimal" Name="Gia" Nullable="false" Precision="10" Scale="2" />
+          <Property Type="String" Name="TenPhim" Nullable="false" MaxLength="200" />
+          <Property Type="DateTime" Name="NgayChieu" Nullable="false" />
+          <Property Type="Time" Name="GioChieu" Nullable="false" />
+          <Property Type="String" Name="TenPhong" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TenRap" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="sp_GetPhongChieuByRap_Result">
+          <Property Type="Int32" Name="IDPhong" Nullable="false" />
+          <Property Type="Int32" Name="IDRap" Nullable="false" />
+          <Property Type="String" Name="TenPhong" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="SoLuongGhe" Nullable="false" />
+          <Property Type="String" Name="LoaiPhong" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_GetTinTucMoiNhat_Result">
+          <Property Type="Int32" Name="IDTinTuc" Nullable="false" />
+          <Property Type="String" Name="TieuDe" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="AnhBia" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="NoiDung" Nullable="false" />
+          <Property Type="DateTime" Name="NgayDang" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="sp_ThongKeDoanhThu_Result">
+          <Property Type="DateTime" Name="Ngay" Nullable="true" />
+          <Property Type="Int32" Name="SoDon" Nullable="true" />
+          <Property Type="Decimal" Name="TongDoanhThu" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Int32" Name="SoVeDaBan" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_TimKhachHang_Result">
+          <Property Type="Int32" Name="IDKhachHang" Nullable="false" />
+          <Property Type="String" Name="HoTen" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="SoDienThoai" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="MaKhach" Nullable="false" MaxLength="20" />
+          <Property Type="DateTime" Name="NgayDangKy" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_GetVeCuaToi_Result">
+          <Property Type="Int32" Name="IDDonDatVe" Nullable="false" />
+          <Property Type="String" Name="TenPhim" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="TenRap" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="NgayChieu" Nullable="false" />
+          <Property Type="Time" Name="GioChieu" Nullable="false" />
+          <Property Type="Decimal" Name="TongTien" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="String" Name="TrangThaiDatVe" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ChuoiGhe" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -626,6 +893,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="THANH_TOAN">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel.THANH_TOAN">
+              <MappingFragment StoreEntitySet="THANH_TOAN">
+                <ScalarProperty Name="IDThanhToan" ColumnName="IDThanhToan" />
+                <ScalarProperty Name="IDDonDatVe" ColumnName="IDDonDatVe" />
+                <ScalarProperty Name="PhuongThuc" ColumnName="PhuongThuc" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayThanhToan" ColumnName="NgayThanhToan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TIN_TUC">
             <EntityTypeMapping TypeName="QuanLyRapPhimModel.TIN_TUC">
               <MappingFragment StoreEntitySet="TIN_TUC">
@@ -649,6 +927,127 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_DangKyTaiKhoan" FunctionName="QuanLyRapPhimModel.Store.sp_DangKyTaiKhoan" />
+          <FunctionImportMapping FunctionImportName="sp_DangNhap" FunctionName="QuanLyRapPhimModel.Store.sp_DangNhap">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_DangNhap_Result">
+                <ScalarProperty Name="IDTaiKhoan" ColumnName="IDTaiKhoan" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="Loai" ColumnName="Loai" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+                <ScalarProperty Name="IDKhachHang" ColumnName="IDKhachHang" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="SoDienThoai" ColumnName="SoDienThoai" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_DatVe" FunctionName="QuanLyRapPhimModel.Store.sp_DatVe">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_DatVe_Result">
+                <ScalarProperty Name="IDDonDatVe" ColumnName="IDDonDatVe" />
+                <ScalarProperty Name="TongTien" ColumnName="TongTien" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_DoiMatKhau" FunctionName="QuanLyRapPhimModel.Store.sp_DoiMatKhau" />
+          <FunctionImportMapping FunctionImportName="sp_GetBinhLuanTheoPhim" FunctionName="QuanLyRapPhimModel.Store.sp_GetBinhLuanTheoPhim">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetBinhLuanTheoPhim_Result">
+                <ScalarProperty Name="IDBinhLuan" ColumnName="IDBinhLuan" />
+                <ScalarProperty Name="IDPhim" ColumnName="IDPhim" />
+                <ScalarProperty Name="TenNguoiBinhLuan" ColumnName="TenNguoiBinhLuan" />
+                <ScalarProperty Name="NgayBinhLuan" ColumnName="NgayBinhLuan" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="SoSao" ColumnName="SoSao" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetChiTietDonVe" FunctionName="QuanLyRapPhimModel.Store.sp_GetChiTietDonVe">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetChiTietDonVe_Result">
+                <ScalarProperty Name="IDDonDatVe" ColumnName="IDDonDatVe" />
+                <ScalarProperty Name="IDKhachHang" ColumnName="IDKhachHang" />
+                <ScalarProperty Name="IDXuatChieu" ColumnName="IDXuatChieu" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+                <ScalarProperty Name="TrangThaiDatVe" ColumnName="TrangThaiDatVe" />
+                <ScalarProperty Name="TongTien" ColumnName="TongTien" />
+                <ScalarProperty Name="ViTriGhe" ColumnName="ViTriGhe" />
+                <ScalarProperty Name="Gia" ColumnName="Gia" />
+                <ScalarProperty Name="TenPhim" ColumnName="TenPhim" />
+                <ScalarProperty Name="NgayChieu" ColumnName="NgayChieu" />
+                <ScalarProperty Name="GioChieu" ColumnName="GioChieu" />
+                <ScalarProperty Name="TenPhong" ColumnName="TenPhong" />
+                <ScalarProperty Name="TenRap" ColumnName="TenRap" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetPhongChieuByRap" FunctionName="QuanLyRapPhimModel.Store.sp_GetPhongChieuByRap">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetPhongChieuByRap_Result">
+                <ScalarProperty Name="IDPhong" ColumnName="IDPhong" />
+                <ScalarProperty Name="IDRap" ColumnName="IDRap" />
+                <ScalarProperty Name="TenPhong" ColumnName="TenPhong" />
+                <ScalarProperty Name="SoLuongGhe" ColumnName="SoLuongGhe" />
+                <ScalarProperty Name="LoaiPhong" ColumnName="LoaiPhong" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetTinTucMoiNhat" FunctionName="QuanLyRapPhimModel.Store.sp_GetTinTucMoiNhat">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetTinTucMoiNhat_Result">
+                <ScalarProperty Name="IDTinTuc" ColumnName="IDTinTuc" />
+                <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+                <ScalarProperty Name="AnhBia" ColumnName="AnhBia" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="NgayDang" ColumnName="NgayDang" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_HuyDonVe" FunctionName="QuanLyRapPhimModel.Store.sp_HuyDonVe" />
+          <FunctionImportMapping FunctionImportName="sp_KhoaTaiKhoan" FunctionName="QuanLyRapPhimModel.Store.sp_KhoaTaiKhoan" />
+          <FunctionImportMapping FunctionImportName="sp_KiemTraGheDaDat" FunctionName="QuanLyRapPhimModel.Store.sp_KiemTraGheDaDat" />
+          <FunctionImportMapping FunctionImportName="sp_MoKhoaTaiKhoan" FunctionName="QuanLyRapPhimModel.Store.sp_MoKhoaTaiKhoan" />
+          <FunctionImportMapping FunctionImportName="sp_ThanhToanDonVe" FunctionName="QuanLyRapPhimModel.Store.sp_ThanhToanDonVe" />
+          <FunctionImportMapping FunctionImportName="sp_ThemBinhLuan" FunctionName="QuanLyRapPhimModel.Store.sp_ThemBinhLuan" />
+          <FunctionImportMapping FunctionImportName="sp_ThongKeDoanhThu" FunctionName="QuanLyRapPhimModel.Store.sp_ThongKeDoanhThu">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_ThongKeDoanhThu_Result">
+                <ScalarProperty Name="Ngay" ColumnName="Ngay" />
+                <ScalarProperty Name="SoDon" ColumnName="SoDon" />
+                <ScalarProperty Name="TongDoanhThu" ColumnName="TongDoanhThu" />
+                <ScalarProperty Name="SoVeDaBan" ColumnName="SoVeDaBan" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_TimKhachHang" FunctionName="QuanLyRapPhimModel.Store.sp_TimKhachHang">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_TimKhachHang_Result">
+                <ScalarProperty Name="IDKhachHang" ColumnName="IDKhachHang" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="SoDienThoai" ColumnName="SoDienThoai" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MaKhach" ColumnName="MaKhach" />
+                <ScalarProperty Name="NgayDangKy" ColumnName="NgayDangKy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetVeCuaToi" FunctionName="QuanLyRapPhimModel.Store.sp_GetVeCuaToi">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetVeCuaToi_Result">
+                <ScalarProperty Name="IDDonDatVe" ColumnName="IDDonDatVe" />
+                <ScalarProperty Name="TenPhim" ColumnName="TenPhim" />
+                <ScalarProperty Name="TenRap" ColumnName="TenRap" />
+                <ScalarProperty Name="NgayChieu" ColumnName="NgayChieu" />
+                <ScalarProperty Name="GioChieu" ColumnName="GioChieu" />
+                <ScalarProperty Name="TongTien" ColumnName="TongTien" />
+                <ScalarProperty Name="TrangThaiDatVe" ColumnName="TrangThaiDatVe" />
+                <ScalarProperty Name="ChuoiGhe" ColumnName="ChuoiGhe" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_HuyVeCuaToi" FunctionName="QuanLyRapPhimModel.Store.sp_HuyVeCuaToi" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

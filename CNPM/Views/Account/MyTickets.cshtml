@@ -1,0 +1,190 @@
+﻿@{
+    ViewBag.Title = "Vé của tôi";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+
+    var listSapChieu = ViewBag.VeSapChieu as List<CNPM.Models.HistoryTicketViewModel>;
+    var listLichSu = ViewBag.VeLichSu as List<CNPM.Models.HistoryTicketViewModel>;
+}
+
+<style>
+
+    .ticket-container {
+        background-color: #1a1a1a; 
+        color: #fff;
+        min-height: 100vh;
+        padding-bottom: 50px;
+    }
+
+
+    .page-header-red {
+        background-color: #750000; 
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 40px;
+        border-bottom: 2px solid #500;
+    }
+
+    .page-header-red h2 {
+        margin: 0;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+
+
+    .content-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .section-title {
+        font-size: 20px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        color: #fff;
+        font-weight: 500;
+        margin-top: 40px;
+    }
+
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #808080; 
+        color: #fff;
+        font-size: 14px;
+    }
+
+    .custom-table th, .custom-table td {
+        border: 1px solid #555; 
+        padding: 15px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .custom-table thead th {
+        background-color: #0f0f0f;
+        color: #ccc; 
+        text-transform: uppercase;
+        font-weight: bold;
+        border-bottom: 1px solid #750000; 
+    }
+
+
+    .custom-table tbody tr {
+        background-color: #777; 
+    }
+
+    .custom-table tbody tr:hover {
+        background-color: #666;
+    }
+
+
+    .btn-detail {
+        background-color: #750000;
+        color: white;
+        padding: 8px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 12px;
+        text-transform: uppercase;
+        transition: 0.3s;
+        border: 1px solid #900;
+        display: inline-block;
+    }
+
+    .btn-detail:hover {
+        background-color: #a00000;
+        text-decoration: none;
+        color: #fff;
+    }
+
+
+    @@media (max-width: 768px) {
+        .custom-table {
+            font-size: 12px;
+        }
+        .btn-detail {
+            padding: 5px 10px;
+        }
+    }
+</style>
+
+<div class="ticket-container">
+    <div class="page-header-red">
+        <h2>VÉ CỦA TÔI</h2>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="section-title">VÉ CÒN HẠN SỬ DỤNG</div>
+
+        @if (listSapChieu != null && listSapChieu.Count > 0)
+        {
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">TÊN PHIM</th>
+                        <th style="width: 15%;">TÊN RẠP</th>
+                        <th style="width: 15%;">NGÀY CHIẾU</th>
+                        <th style="width: 15%;">GIỜ CHIẾU</th>
+                        <th style="width: 15%;">VỊ TRÍ GHẾ</th>
+                        <th style="width: 20%;">CHỨC NĂNG</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listSapChieu)
+                    {
+                        <tr>
+                            <td>@item.TenPhim</td>
+                            <td>@item.TenRap</td>
+                            <td>@item.NgayChieu.ToString("dd/MM/yyyy")</td>
+                            <td>@item.GioChieu.ToString(@"hh\:mm")</td>
+                            <td>@item.ChuoiGhe</td>
+                            <td>
+                                <a href="@Url.Action("TicketDetail", "Account", new {id = item.IDDonDatVe})" class="btn-detail">Chi Tiết</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p style="color: #bbb; font-style: italic;">Bạn chưa có vé sắp chiếu nào.</p>
+        }
+
+
+        <div class="section-title">VÉ ĐÃ SỬ DỤNG HOẶC HẾT HẠN</div>
+
+        @if (listLichSu != null && listLichSu.Count > 0)
+        {
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">TÊN PHIM</th>
+                        <th style="width: 20%;">NGÀY CHIẾU</th>
+                        <th style="width: 20%;">GIỜ CHIẾU</th>
+                        <th style="width: 30%;">VỊ TRÍ GHẾ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listLichSu)
+                    {
+                        <tr>
+                            <td>@item.TenPhim</td>
+                            <td>@item.NgayChieu.ToString("dd/MM/yyyy")</td>
+                            <td>@item.GioChieu.ToString(@"hh\:mm")</td>
+                            <td>@item.ChuoiGhe</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p style="color: #bbb; font-style: italic;">Lịch sử đặt vé trống.</p>
+        }
+    </div>
+</div>

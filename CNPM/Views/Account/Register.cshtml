@@ -1,0 +1,219 @@
+﻿@{
+    ViewBag.Title = "Đăng Ký";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+
+<style>
+    .login-background {
+        background-image: url('https://res.cloudinary.com/dxy81jyw2/image/upload/v1765469418/6dbf64af2a7b6735b7d428514975c425ff5cc8dc_wdghli.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 50px 0; 
+    }
+
+    .login-overlay {
+        background-color: rgba(0, 0, 0, 0.7);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .login-box {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 500px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        background-color: rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        margin: 20px;
+    }
+
+    .auth-tabs {
+        display: flex;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .auth-tab-item {
+        flex: 1;
+        text-align: center;
+        padding: 20px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+        .auth-tab-item:hover {
+            text-decoration: none;
+            color: #dc3545;
+        }
+
+        .auth-tab-item.active {
+            border-bottom: 3px solid #b30000;
+            color: #fff;
+        }
+
+        .auth-tab-item.inactive {
+            color: #888;
+        }
+
+    .login-form-content {
+        padding: 30px 40px;
+    }
+
+    .form-label {
+        color: #ddd;
+        margin-bottom: 8px;
+        display: block;
+        font-size: 15px;
+    }
+
+    .custom-input {
+        width: 100%;
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: none;
+        background-color: #e0e0e0;
+        margin-bottom: 15px;
+        font-size: 14px;
+        outline: none;
+        height: 45px;
+    }
+
+        .custom-input:focus {
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+
+    .terms-checkbox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        color: #fff;
+        font-size: 14px;
+    }
+
+        .terms-checkbox input {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+    .highlight-text {
+        color: #ff6b6b; 
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .btn-login-red {
+        background-color: #8B0000;
+        color: white;
+        padding: 10px 40px;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background 0.3s;
+        margin-top: 5px;
+    }
+
+        .btn-login-red:hover {
+            background-color: #b30000;
+        }
+
+    .alert-custom {
+        background-color: rgba(220, 53, 69, 0.2);
+        color: #ff6b6b;
+        border: 1px solid #dc3545;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+</style>
+
+<div class="login-background">
+    <div class="login-overlay"></div>
+
+    <div class="login-box">
+        <div class="auth-tabs">
+            <a href="@Url.Action("Login", "Account")" class="auth-tab-item inactive">ĐĂNG NHẬP</a>
+            <a href="javascript:void(0);" class="auth-tab-item active">ĐĂNG KÝ</a>
+        </div>
+
+        <div class="login-form-content">
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert-custom">
+                    @ViewBag.Error
+                </div>
+            }
+
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "registerForm" }))
+            {
+                <input type="hidden" name="username" id="hiddenUsername" />
+                <input type="hidden" name="confirmPassword" id="hiddenConfirmPass" />
+
+                <div class="form-group">
+                    <label class="form-label">Họ và Tên</label>
+                    <input type="text" name="fullname" class="custom-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Số điện thoại</label>
+                    <input type="text" name="phone" class="custom-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" id="emailInput" class="custom-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu</label>
+                    <input type="password" name="password" id="passInput" class="custom-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Ngày sinh</label>
+                    <input type="date" class="custom-input" style="padding-right: 10px;" />
+                </div>
+
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" required />
+                    <label for="terms" style="margin:0; cursor:pointer;">
+                        Tôi đã đọc và đồng ý với các <a href="#" class="highlight-text">điều khoản</a>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-login-red">Đăng Ký</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+        var email = document.getElementById('emailInput').value;
+        document.getElementById('hiddenUsername').value = email;
+        var pass = document.getElementById('passInput').value;
+        document.getElementById('hiddenConfirmPass').value = pass;
+    });
+</script>

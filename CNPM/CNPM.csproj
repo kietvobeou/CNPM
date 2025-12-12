@@ -127,55 +127,87 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BINH_LUAN.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CinemaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="CT_DATVE.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DON_DAT_VE.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="KHACH_HANG.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HistoryTicketViewModel.cs" />
     <Compile Include="PHIM.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="PHONG_CHIEU.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuanLyRapPhim.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>QuanLyRapPhim.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="QuanLyRapPhim.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
-    </Compile>
-    <Compile Include="QuanLyRapPhim.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>QuanLyRapPhim.edmx</DependentUpon>
-    </Compile>
     <Compile Include="RAP_PHIM.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_DangNhap_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_DatVe_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetBinhLuanTheoPhim_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetChiTietDonVe_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetPhongChieuByRap_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetTinTucMoiNhat_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetVeCuaToi_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_ThongKeDoanhThu_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_TimKhachHang_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="TAI_KHOAN.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="THANH_TOAN.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="TIN_TUC.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="XUAT_CHIEU.cs">
-      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -225,15 +257,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="QuanLyRapPhim.Context.tt">
+    <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>QuanLyRapPhim.Context.cs</LastGenOutput>
-      <DependentUpon>QuanLyRapPhim.edmx</DependentUpon>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="QuanLyRapPhim.tt">
+    <Content Include="Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>QuanLyRapPhim.edmx</DependentUpon>
-      <LastGenOutput>QuanLyRapPhim.cs</LastGenOutput>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -241,13 +273,6 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="QuanLyRapPhim.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>QuanLyRapPhim.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="QuanLyRapPhim.edmx.diagram">
-      <DependentUpon>QuanLyRapPhim.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap\css\bootstrap-grid.css.map" />
     <Content Include="Content\bootstrap\css\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap\css\bootstrap-grid.rtl.css.map" />
@@ -270,6 +295,13 @@
     <Content Include="Content\bootstrap\js\bootstrap.esm.min.js.map" />
     <Content Include="Content\bootstrap\js\bootstrap.js.map" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js.map" />
+    <EntityDeploy Include="Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -300,10 +332,13 @@
     <Content Include="Views\Cinema\ChiTiet.cshtml" />
     <Content Include="Views\Cinema\DatVe.cshtml" />
     <Content Include="Views\Cinema\ThanhToan.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\MyTickets.cshtml" />
+    <Content Include="Views\Account\TicketDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
