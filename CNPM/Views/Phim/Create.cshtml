@@ -1,0 +1,129 @@
+﻿@model CNPM.PHIM
+
+@{
+    ViewBag.Title = "Thêm Phim";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #0a0a0a;
+    }
+
+    .form-container {
+        max-width: 700px;
+        margin: 40px auto;
+        background: #111;
+        padding: 30px;
+        border-radius: 12px;
+        border: 1px solid #dc3545;
+        box-shadow: 0 0 15px rgba(220, 53, 69, 0.4);
+    }
+
+    .form-title {
+        color: #dc3545;
+        font-size: 32px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    label {
+        color: #f5f5f5;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .input-dark {
+        width: 100%;
+        padding: 12px;
+        background-color: #1b1b1b;
+        border: 1px solid #333;
+        color: white;
+        border-radius: 8px;
+        transition: 0.2s;
+    }
+
+        .input-dark:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+            outline: none;
+        }
+
+    textarea.input-dark {
+        resize: none;
+    }
+
+
+    /* BUTTON STYLE */
+    .btn-red {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(90deg, #b31217, #e52d27);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        transition: 0.3s;
+        margin-top: 15px;
+    }
+
+        .btn-red:hover {
+            box-shadow: 0 0 15px rgba(229, 45, 39, 0.7);
+            transform: scale(1.03);
+        }
+</style>
+
+
+<div class="form-container">
+
+    <div class="form-title">THÊM PHIM MỚI</div>
+
+    @using (Html.BeginForm("Create", "Phim", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="mb-3">
+            <label>Tên phim</label>
+            @Html.TextBoxFor(m => m.TenPhim, new { @class = "input-dark", required = "required" })
+        </div>
+
+        <div class="mb-3">
+            <label>Đạo diễn</label>
+            @Html.TextBoxFor(m => m.DaoDien, new { @class = "input-dark", required = "required" })
+        </div>
+
+        <div class="mb-3">
+            <label>Thể loại</label>
+            @Html.TextBoxFor(m => m.TheLoai, new { @class = "input-dark", required = "required" })
+        </div>
+
+        <div class="mb-3">
+            <label>Thời lượng (phút)</label>
+            @Html.TextBoxFor(m => m.ThoiLuong, new { @class = "input-dark", type = "number", min = "1", required = "required" })
+        </div>
+
+        <div class="mb-3">
+            <label>Tóm tắt phim</label>
+            @Html.TextAreaFor(m => m.TomTat, new { @class = "input-dark", rows = 4, required = "required" })
+        </div>
+
+        <div class="mb-3">
+            <label>Trạng thái</label>
+            @Html.DropDownListFor(m => m.TrangThai,
+                new SelectList(new[]
+                {
+                    new { Value = "Đang chiếu", Text = "Đang chiếu" },
+                    new { Value = "Sắp chiếu", Text = "Sắp chiếu" }
+                }, "Value", "Text"),
+                "-- Chọn trạng thái --",
+                new { @class = "input-dark", required = "required" })
+        </div>
+
+        <div class="mb-3">
+            <label>Ảnh bìa</label>
+            <input type="file" name="AnhBiaFile" class="input-dark" accept="image/*" required />
+        </div>
+
+        <button type="submit" class="btn-red">Thêm phim</button>
+    }
+</div>
