@@ -1,0 +1,76 @@
+﻿@model XUAT_CHIEU
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="container-fluid py-4" style="background-color:#111;">
+    <div class="text-center text-white py-3"
+         style="background-color:#7b0000; letter-spacing:2px; font-size:32px; font-weight:700;">
+        XÁC NHẬN XÓA XUẤT CHIẾU
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card p-4" style="width:80%; background-color:#333; border:none;">
+            <div class="text-center text-white mb-4">
+                <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                <h4>Bạn có chắc chắn muốn xóa xuất chiếu này?</h4>
+                <p class="text-muted">Thao tác này không thể hoàn tác</p>
+            </div>
+
+            <div class="text-white mb-4 p-3" style="background-color:#444; border-left:4px solid #7b0000;">
+                <h5>Thông tin xuất chiếu sẽ bị xóa:</h5>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <p><strong>Phim:</strong> @(Model.PHIM?.TenPhim ?? "N/A")</p>
+                        <p><strong>Đạo diễn:</strong> @(Model.PHIM?.DaoDien ?? "N/A")</p>
+                        <p><strong>Thể loại:</strong> @(Model.PHIM?.TheLoai ?? "N/A")</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Phòng chiếu:</strong> @(Model.PHONG_CHIEU?.TenPhong ?? "Phòng " + Model.IDPhong)</p>
+                        <p><strong>Ngày chiếu:</strong> @Model.NgayChieu.ToString("dd/MM/yyyy")</p>
+                        <p><strong>Giờ chiếu:</strong> @Model.GioChieu.ToString(@"hh\:mm")</p>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <p><strong>Giá vé:</strong> @Model.GiaVe.ToString("N0") VNĐ</p>
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.PHONG_CHIEU != null && Model.PHONG_CHIEU.RAP_PHIM != null)
+                        {
+                            <p><strong>Rạp:</strong> @Model.PHONG_CHIEU.RAP_PHIM.TenRap</p>
+                        }
+                    </div>
+                </div>
+
+                @if (Model.DON_DAT_VE != null && Model.DON_DAT_VE.Any())
+                {
+                    <div class="alert alert-danger mt-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Cảnh báo:</strong> Xuất chiếu này có @Model.DON_DAT_VE.Count() đơn đặt vé.
+                        Xóa xuất chiếu sẽ xóa tất cả đơn đặt vé liên quan!
+                    </div>
+                }
+            </div>
+
+            @using (Html.BeginForm("DeleteConfirmed", "XuatChieu", new { id = Model.IDXuatChieu }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.IDXuatChieu)
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn" style="background-color:#c0392b; color:white; padding:8px 32px; border-radius:0;">
+                        <i class="fas fa-trash me-2"></i>Xóa Xuất Chiếu
+                    </button>
+                    <a href="@Url.Action("Index", "XuatChieu")" class="btn btn-secondary ms-2" style="padding:8px 32px; border-radius:0;">
+                        <i class="fas fa-times me-2"></i>Hủy Bỏ
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

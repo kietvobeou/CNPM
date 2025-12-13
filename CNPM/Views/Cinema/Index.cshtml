@@ -150,21 +150,22 @@
         <div class="row">
             @foreach (var item in phimSapChieu)
             {
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="movie-card">
-                    <div class="movie-image-container">
-                        <img src="~/Content/HinhAnh/@item.AnhBia" alt="@item.TenPhim" class="movie-img">
-                        <div class="movie-overlay">
-                            <button class="movie-detail-btn" onclick="location.href='@Url.Action("ChiTiet", "Cinema", new { id = item.IDPhim })'">Chi Tiết</button>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="movie-card">
+                        <div class="movie-image-container">
+                            <img src="~/Content/HinhAnh/@item.AnhBia" alt="@item.TenPhim" class="movie-img">
+                            <div class="movie-overlay">
+                                <button class="movie-detail-btn" onclick="location.href='@Url.Action("ChiTiet", "Cinema", new { id = item.IDPhim })'">Chi Tiết</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             }
-        <div class="row mt-4">
-            <div class="col-12 text-center">
-                <button class="view-more-center" onclick="location.href='@Url.Action("SapChieu", "Phim")'">Xem Thêm</button>
-            </div>
         </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <button class="view-more-center" onclick="location.href='@Url.Action("SapChieu", "Phim")'">Xem Thêm</button>
+                </div>
+            </div>
     </div>
 </section>

@@ -136,6 +136,7 @@
     <Compile Include="Controllers\PhongChieuController.cs" />
     <Compile Include="Controllers\RapPhimController.cs" />
     <Compile Include="Controllers\TaiKhoanController.cs" />
+    <Compile Include="Controllers\XuatChieuController.cs" />
     <Compile Include="CT_DATVE.cs">
       <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
     </Compile>
@@ -361,6 +362,10 @@
     <Content Include="Views\PhongChieu\Create.cshtml" />
     <Content Include="Views\PhongChieu\Edit.cshtml" />
     <Content Include="Views\PhongChieu\Delete.cshtml" />
+    <Content Include="Views\XuatChieu\Index.cshtml" />
+    <Content Include="Views\XuatChieu\Create.cshtml" />
+    <Content Include="Views\XuatChieu\Edit.cshtml" />
+    <Content Include="Views\XuatChieu\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

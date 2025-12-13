@@ -1,0 +1,245 @@
+﻿@model IEnumerable<XUAT_CHIEU>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #111;
+    }
+
+    .custom-table {
+        width: 95%;
+        margin: 0 auto;
+        border-collapse: collapse;
+    }
+
+        .custom-table thead {
+            background-color: #0D0D0D;
+        }
+
+        .custom-table th {
+            padding: 18px 15px;
+            color: #D5D5D5 !important;
+            text-align: center;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .custom-table tbody tr {
+            background-color: #696969 !important;
+            border-bottom: 1px solid #555;
+        }
+
+        .custom-table td {
+            padding: 16px 15px;
+            color: #D5D5D5 !important;
+            text-align: center;
+            border: none;
+        }
+
+    /* ========== NÚT HÀNH ĐỘNG ========== */
+    .action-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .action-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(13, 13, 13, 0.3);
+        border: 1px solid;
+        transition: all 0.2s ease;
+    }
+
+    /* Nút sửa - màu D5D5D5 */
+    .edit-btn {
+        color: #D5D5D5 !important;
+        border-color: #D5D5D5 !important;
+    }
+
+        .edit-btn:hover {
+            background-color: #D5D5D5;
+            color: #000 !important;
+        }
+
+    /* Nút xóa - màu đỏ */
+    .delete-btn {
+        color: #e74c3c !important;
+        border-color: #e74c3c !important;
+    }
+
+        .delete-btn:hover {
+            background-color: #e74c3c;
+            color: white !important;
+        }
+
+    /* ========== TIÊU ĐỀ ========== */
+    .page-title {
+        background-color: #0D0D0D;
+        color: #D5D5D5 !important;
+        padding: 20px 0;
+        text-align: center;
+        font-size: 28px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+        border-bottom: 3px solid #7b0000;
+    }
+
+    .add-btn {
+        background-color: #0D0D0D;
+        color: #D5D5D5 !important;
+        padding: 12px 35px;
+        border: 1px solid #7b0000;
+        border-radius: 6px;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .add-btn:hover {
+            background-color: #7b0000;
+            color: white !important;
+            text-decoration: none;
+        }
+
+    /* Thêm style để đảm bảo tất cả text trong bảng đều là D5D5D5 */
+    .custom-table tbody tr,
+    .custom-table tbody tr td,
+    .custom-table tbody tr span,
+    .custom-table tbody tr i {
+        color: #D5D5D5 !important;
+    }
+
+        /* Hover effect - khi hover thì đổi ngược lại: nền đỏ, chữ trắng */
+        .custom-table tbody tr:hover {
+            background-color: #7b0000 !important;
+        }
+
+            .custom-table tbody tr:hover td,
+            .custom-table tbody tr:hover span,
+            .custom-table tbody tr:hover i {
+                color: #ffffff !important;
+            }
+</style>
+<div class="container-fluid py-4">
+    <!-- TIÊU ĐỀ -->
+    <div class="page-title">
+        <i class="fas fa-film me-2"></i>DANH SÁCH XUẤT CHIẾU
+    </div>
+
+    <!-- BẢNG DANH SÁCH -->
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Tên Phim</th>
+                    <th class="text-center">Phòng Chiếu</th>
+                    <th class="text-center">Ngày Chiếu</th>
+                    <th class="text-center">Giờ Chiếu</th>
+                    <th class="text-center">Giá Vé</th>
+                    <th class="text-center">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int counter = 1; }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@counter</td>
+                        <td class="text-center fw-bold">
+                            <i class="fas fa-video me-1"></i>
+                            @(item.PHIM?.TenPhim ?? "N/A")
+                        </td>
+                        <td class="text-center">
+                            @if (item.PHONG_CHIEU != null)
+                            {
+                                <span>
+                                    <i class="fas fa-door-closed me-1"></i> @item.PHONG_CHIEU.TenPhong
+                                    <br />
+                                    <small>(@item.PHONG_CHIEU.LoaiPhong)</small>
+                                </span>
+                            }
+                            else
+                            {
+                                <span>Phòng @item.IDPhong</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <span>
+                                <i class="far fa-calendar-alt me-1"></i>
+                                @item.NgayChieu.ToString("dd/MM/yyyy")
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span>
+                                <i class="far fa-clock me-1"></i>
+                                @item.GioChieu.ToString(@"hh\:mm")
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span>
+                                <i class="fas fa-ticket-alt me-1"></i>
+                                @item.GiaVe.ToString("N0") đ
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <div class="action-container">
+                                <a href="@Url.Action("Edit", "XuatChieu", new { id = item.IDXuatChieu })"
+                                   class="action-btn edit-btn"
+                                   title="Chỉnh sửa">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", "XuatChieu", new { id = item.IDXuatChieu })"
+                                   class="action-btn delete-btn"
+                                   title="Xóa"
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa xuất chiếu này?\\nTất cả đơn đặt vé liên quan cũng sẽ bị xóa.');">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    counter++;
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- NÚT THÊM XUẤT CHIẾU -->
+    <div class="text-center mt-4 mb-4">
+        <a href="@Url.Action("Create","XuatChieu")" class="add-btn">
+            <i class="fas fa-plus-circle me-1"></i> THÊM XUẤT CHIẾU MỚI
+        </a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Hiệu ứng hover đơn giản cho các hàng
+        $('.custom-table tbody tr').hover(
+            function () {
+                $(this).css('background-color', '#7b0000');
+                $(this).find('td').css('color', '#ffffff');
+            },
+            function () {
+                $(this).css('background-color', '#696969');
+                $(this).find('td').css('color', '#D5D5D5');
+            }
+        );
+    });
+</script>

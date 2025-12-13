@@ -1,0 +1,103 @@
+﻿@model XUAT_CHIEU
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="container-fluid py-4" style="background-color:#111;">
+    <div class="text-center text-white py-3"
+         style="background-color:#7b0000; letter-spacing:2px; font-size:32px; font-weight:700;">
+        THÊM XUẤT CHIẾU MỚI
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card p-4" style="width:80%; background-color:#333; border:none;">
+            @using (Html.BeginForm("Create", "XuatChieu", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-white">Phim</label>
+                        @Html.DropDownList("IDPhim", (SelectList)ViewBag.IDPhim, "Chọn phim", new { @class = "form-control bg-dark text-white" })
+                        @Html.ValidationMessageFor(model => model.IDPhim, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-white">Phòng Chiếu</label>
+                        @Html.DropDownList("IDPhong", (SelectList)ViewBag.IDPhong, "Chọn phòng", new { @class = "form-control bg-dark text-white" })
+                        @Html.ValidationMessageFor(model => model.IDPhong, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-white">Ngày Chiếu</label>
+                        @Html.EditorFor(model => model.NgayChieu, new { htmlAttributes = new { @class = "form-control bg-dark text-white", type = "date" } })
+                        @Html.ValidationMessageFor(model => model.NgayChieu, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-white">Giờ Chiếu</label>
+                        @Html.EditorFor(model => model.GioChieu, new { htmlAttributes = new { @class = "form-control bg-dark text-white", type = "time" } })
+                        @Html.ValidationMessageFor(model => model.GioChieu, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label text-white">Giá Vé (VNĐ)</label>
+                        @Html.EditorFor(model => model.GiaVe, new { htmlAttributes = new { @class = "form-control bg-dark text-white", type = "number", min = "0", step = "1000", placeholder = "Ví dụ: 85000" } })
+                        @Html.ValidationMessageFor(model => model.GiaVe, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn" style="background-color:#7b0000; color:white; padding:8px 32px; border-radius:0;">
+                        <i class="fas fa-plus me-2"></i>Thêm Xuất Chiếu
+                    </button>
+                    <a href="@Url.Action("Index", "XuatChieu")" class="btn btn-secondary ms-2" style="padding:8px 32px; border-radius:0;">
+                        <i class="fas fa-arrow-left me-2"></i>Quay lại
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            // Set min date to today for date picker
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById('NgayChieu').setAttribute('min', today);
+
+            // Set default time to next hour
+            var now = new Date();
+            var nextHour = new Date(now.getTime() + 60 * 60 * 1000);
+            var hours = nextHour.getHours().toString().padStart(2, '0');
+            var minutes = nextHour.getMinutes().toString().padStart(2, '0');
+            document.getElementById('GioChieu').value = hours + ':' + minutes;
+
+            // Auto-format price input
+            $('#GiaVe').on('input', function() {
+                var value = $(this).val().replace(/[^\d]/g, '');
+                if (value) {
+                    var formatted = parseInt(value, 10).toLocaleString('vi-VN');
+                    $(this).val(formatted);
+                }
+            });
+
+            // Prevent form submission if price has non-numeric characters
+            $('form').submit(function() {
+                var priceInput = $('#GiaVe');
+                var priceValue = priceInput.val().replace(/[^\d]/g, '');
+                priceInput.val(priceValue);
+                return true;
+            });
+        });
+    </script>
+}
