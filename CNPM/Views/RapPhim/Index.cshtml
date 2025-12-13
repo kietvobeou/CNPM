@@ -1,0 +1,359 @@
+﻿@model IEnumerable<RAP_PHIM>
+
+@{
+    ViewBag.Title = "Danh sách rạp";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+
+<style>
+    /* ========== RESET VÀ STYLE CƠ BẢN ========== */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #111;
+    }
+
+    /* ========== STYLE CHO BẢNG ========== */
+    .custom-table {
+        width: 95%;
+        margin: 0 auto;
+        color: #D5D5D5;
+        background-color: #696969;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+        .custom-table thead {
+            background-color: #0D0D0D;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .custom-table th {
+            padding: 18px 15px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            position: relative;
+            color: #D5D5D5;
+            text-align: center;
+            border-bottom: 2px solid #444;
+        }
+
+            .custom-table th:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 20%;
+                height: 60%;
+                width: 1px;
+                background-color: #444;
+            }
+
+        .custom-table tbody tr {
+            background-color: #696969;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #555;
+        }
+
+            .custom-table tbody tr:nth-child(even) {
+                background-color: #5e5e5e;
+            }
+
+            .custom-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .custom-table tbody tr:hover {
+                background-color: #7b0000;
+            }
+
+                .custom-table tbody tr:hover td {
+                    color: #ffffff;
+                }
+
+        .custom-table td {
+            padding: 16px 15px;
+            vertical-align: middle;
+            border: none;
+            font-size: 14px;
+            color: #D5D5D5;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+    /* ========== STYLE CHO BADGE ========== */
+    .info-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        background: rgba(13, 13, 13, 0.3);
+        border-left: 3px solid #8b0000;
+        color: #D5D5D5;
+        transition: all 0.2s ease;
+    }
+
+        .info-badge:hover {
+            background: rgba(13, 13, 13, 0.5);
+            transform: translateX(3px);
+        }
+
+    .email-link {
+        color: #66b3ff;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+        .email-link:hover {
+            color: #ffffff;
+            background: rgba(102, 179, 255, 0.2);
+            text-decoration: underline;
+        }
+
+    /* ========== STYLE CHO NÚT HÀNH ĐỘNG ========== */
+    .action-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        background-color: rgba(13, 13, 13, 0.3);
+    }
+
+        .action-btn i {
+            font-size: 14px;
+        }
+
+    .edit-btn {
+        color: #3498db;
+        border: 1px solid #3498db;
+    }
+
+        .edit-btn:hover {
+            background-color: #3498db;
+            color: white;
+            transform: scale(1.05);
+        }
+
+    .delete-btn {
+        color: #e74c3c;
+        border: 1px solid #e74c3c;
+    }
+
+        .delete-btn:hover {
+            background-color: #e74c3c;
+            color: white;
+            transform: scale(1.05);
+        }
+
+    /* ========== STYLE CHO TIÊU ĐỀ ========== */
+    .page-header {
+        background-color: #0D0D0D;
+        color: #D5D5D5;
+        padding: 20px 0;
+        text-align: center;
+        letter-spacing: 2px;
+        font-size: 28px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+        border-bottom: 3px solid #7b0000;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* ========== STYLE CHO NÚT THÊM MỚI ========== */
+    .add-new-btn {
+        background-color: #0D0D0D;
+        color: #D5D5D5;
+        padding: 12px 35px;
+        border: 1px solid #7b0000;
+        border-radius: 6px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .add-new-btn:hover {
+            background-color: #7b0000;
+            color: white;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        .add-new-btn i {
+            font-size: 16px;
+        }
+
+    /* ========== CONTAINER STYLE ========== */
+    .container-fluid {
+        background-color: #111;
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @@media (max-width: 992px) {
+        .custom-table {
+            width: 100%;
+        }
+
+        .page-header {
+            font-size: 24px;
+            padding: 18px 0;
+        }
+
+        .custom-table th,
+        .custom-table td {
+            padding: 14px 10px;
+            font-size: 13px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .page-header {
+            font-size: 20px;
+            letter-spacing: 1.5px;
+        }
+
+        .action-container {
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+        }
+
+        .add-new-btn {
+            padding: 10px 25px;
+            font-size: 14px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .page-header {
+            font-size: 18px;
+            padding: 15px 0;
+        }
+
+        .custom-table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <!-- TIÊU ĐỀ -->
+    <div class="page-header">
+        <i class="fas fa-film me-2"></i>DANH SÁCH RẠP PHIM
+    </div>
+
+    <!-- BẢNG DANH SÁCH -->
+    <div class="table-responsive">
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th class="text-center">Tên Rạp</th>
+                    <th class="text-center">Địa Chỉ</th>
+                    <th class="text-center">Số Điện Thoại</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center fw-bold">
+                            <i class="fas fa-building me-1"></i>@item.TenRap
+                        </td>
+                        <td class="text-center">
+                            <span class="info-badge">
+                                <i class="fas fa-map-marker-alt me-1"></i>@item.DiaChi
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span class="info-badge">
+                                <i class="fas fa-phone me-1"></i>@item.SoDienThoai
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a href="mailto:@item.Email" class="email-link">
+                                <i class="fas fa-envelope me-1"></i>@item.Email
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <div class="action-container">
+                                <a href="@Url.Action("Edit", "RapPhim", new { id = item.IDRap })"
+                                   class="action-btn edit-btn"
+                                   title="Chỉnh sửa">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", "RapPhim", new { id = item.IDRap })"
+                                   class="action-btn delete-btn"
+                                   title="Xóa"
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa rạp này?\\nTất cả phòng chiếu và suất chiếu liên quan cũng sẽ bị xóa.');">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- NÚT THÊM RẠP -->
+    <div class="text-center mt-4 mb-4">
+        <a href="@Url.Action("Create","RapPhim")" class="add-new-btn">
+            <i class="fas fa-plus-circle me-1"></i> THÊM RẠP MỚI
+        </a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Hiệu ứng hover đơn giản cho các hàng
+        $('.custom-table tbody tr').hover(
+            function () {
+                $(this).css('background-color', '#7b0000');
+                $(this).find('td').css('color', '#ffffff');
+                $(this).find('.info-badge').css('color', '#ffffff');
+            },
+            function () {
+                if ($(this).index() % 2 === 0) {
+                    $(this).css('background-color', '#696969');
+                } else {
+                    $(this).css('background-color', '#5e5e5e');
+                }
+                $(this).find('td').css('color', '#D5D5D5');
+                $(this).find('.info-badge').css('color', '#D5D5D5');
+            }
+        );
+    });
+</script>

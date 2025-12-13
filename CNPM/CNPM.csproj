@@ -133,6 +133,8 @@
     <Compile Include="Controllers\CinemaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhimController.cs" />
+    <Compile Include="Controllers\PhongChieuController.cs" />
+    <Compile Include="Controllers\RapPhimController.cs" />
     <Compile Include="Controllers\TaiKhoanController.cs" />
     <Compile Include="CT_DATVE.cs">
       <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
@@ -351,6 +353,14 @@
     <Content Include="Views\TaiKhoan\TicketDetail.cshtml" />
     <Content Include="Views\BaoCao\Index.cshtml" />
     <Content Include="Views\Phim\Edit.cshtml" />
+    <Content Include="Views\RapPhim\Index.cshtml" />
+    <Content Include="Views\RapPhim\Create.cshtml" />
+    <Content Include="Views\RapPhim\Edit.cshtml" />
+    <Content Include="Views\RapPhim\Delete.cshtml" />
+    <Content Include="Views\PhongChieu\Index.cshtml" />
+    <Content Include="Views\PhongChieu\Create.cshtml" />
+    <Content Include="Views\PhongChieu\Edit.cshtml" />
+    <Content Include="Views\PhongChieu\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,66 @@
+﻿@model RAP_PHIM
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+}
+
+
+
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="container-fluid py-4" style="background-color:#111;">
+    <div class="text-center text-white py-3"
+         style="background-color:#7b0000; letter-spacing:2px; font-size:32px; font-weight:700;">
+        THÊM RẠP MỚI
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card p-4" style="width:80%; background-color:#333; border:none;">
+            @using (Html.BeginForm("Create", "RapPhim", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-white">Tên Rạp</label>
+                        @Html.EditorFor(model => model.TenRap, new { htmlAttributes = new { @class = "form-control bg-dark text-white", placeholder = "Nhập tên rạp" } })
+                        @Html.ValidationMessageFor(model => model.TenRap, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-white">Số Điện Thoại</label>
+                        @Html.EditorFor(model => model.SoDienThoai, new { htmlAttributes = new { @class = "form-control bg-dark text-white", placeholder = "Nhập số điện thoại" } })
+                        @Html.ValidationMessageFor(model => model.SoDienThoai, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">Địa Chỉ</label>
+                    @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control bg-dark text-white", placeholder = "Nhập địa chỉ" } })
+                    @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-white">Email</label>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control bg-dark text-white", placeholder = "Nhập email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn" style="background-color:#7b0000; color:white; padding:8px 32px; border-radius:0;">
+                        <i class="fas fa-plus me-2"></i>Thêm Rạp
+                    </button>
+                    <a href="@Url.Action("Index", "RapPhim")" class="btn btn-secondary ms-2" style="padding:8px 32px; border-radius:0;">
+                        <i class="fas fa-arrow-left me-2"></i>Quay lại
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
