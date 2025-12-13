@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CNPM.Models;
 
 namespace CNPM.Controllers
 {
@@ -13,14 +14,14 @@ namespace CNPM.Controllers
         // ========== TRANG PHIM ĐANG CHIẾU ==========
         public ActionResult DangChieu()
         {
-            var list = db.PHIM.Where(x => x.TrangThai == "Đang chiếu").ToList();
+            var list = db.PHIMs.Where(x => x.TrangThai == "Đang chiếu").ToList();
             return View(list);
         }
 
         // ========== TRANG PHIM SẮP CHIẾU ==========
         public ActionResult SapChieu()
         {
-            var list = db.PHIM.Where(x => x.TrangThai == "Sắp chiếu").ToList();
+            var list = db.PHIMs.Where(x => x.TrangThai == "Sắp chiếu").ToList();
             return View(list);
         }
 
@@ -35,7 +36,7 @@ namespace CNPM.Controllers
             if (ModelState.IsValid)
             {
                 // 1. Thêm phim vào DB trước để có IDPhim
-                db.PHIM.Add(model);
+                db.PHIMs.Add(model);
                 db.SaveChanges();
 
                 // 2. Nếu có upload ảnh
@@ -60,7 +61,7 @@ namespace CNPM.Controllers
         }
         public ActionResult Delete(int id)
         {
-            var phim = db.PHIM.Find(id);
+            var phim = db.PHIMs.Find(id);
 
             if (phim == null)
                 return HttpNotFound();
@@ -71,7 +72,7 @@ namespace CNPM.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var phim = db.PHIM.Find(id);
+            var phim = db.PHIMs.Find(id);
 
             if (phim == null)
                 return HttpNotFound();
@@ -89,11 +90,81 @@ namespace CNPM.Controllers
             }
 
             // Xóa phim trong database
-            db.PHIM.Remove(phim);
+            db.PHIMs.Remove(phim);
             db.SaveChanges();
 
             return RedirectToAction("SapChieu"); // Hoặc DangChieu tùy bạn
         }
+        public ActionResult Edit(int id)
+        {
+            var phim = db.PHIMs.Find(id);
 
+            if (phim == null)
+                return HttpNotFound();
+
+            return View(phim);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(PHIM model, HttpPostedFileBase AnhBiaFile, HttpPostedFileBase AnhNenFile)
+        {
+            if (ModelState.IsValid)
+            {
+                var phim = db.PHIMs.Find(model.IDPhim);
+
+                if (phim == null)
+                    return HttpNotFound();
+
+                phim.TenPhim = model.TenPhim;
+                phim.DaoDien = model.DaoDien;
+                phim.TheLoai = model.TheLoai;
+                phim.ThoiLuong = model.ThoiLuong;
+                phim.TomTat = model.TomTat;
+                phim.TrangThai = model.TrangThai;
+                if (AnhBiaFile != null && AnhBiaFile.ContentLength > 0)
+                {
+                    if (!string.IsNullOrEmpty(phim.AnhBia))
+                    {
+                        string oldPath = Path.Combine(Server.MapPath("~/Content/HinhAnh"), phim.AnhBia);
+                        if (System.IO.File.Exists(oldPath))
+                        {
+                            System.IO.File.Delete(oldPath);
+                        }
+                    }
+                    string extension = Path.GetExtension(AnhBiaFile.FileName);
+                    string fileName = "AnhBia_" + phim.IDPhim + extension;
+                    string path = Path.Combine(Server.MapPath("~/Content/HinhAnh"), fileName);
+
+                    AnhBiaFile.SaveAs(path);
+                    phim.AnhBia = fileName;
+                }
+                if (AnhNenFile != null && AnhNenFile.ContentLength > 0)
+                {
+                    if (!string.IsNullOrEmpty(phim.AnhNen))
+                    {
+                        string oldPath = Path.Combine(Server.MapPath("~/Content/HinhAnh"), phim.AnhNen);
+                        if (System.IO.File.Exists(oldPath))
+                        {
+                            System.IO.File.Delete(oldPath);
+                        }
+                    }
+                    string extension = Path.GetExtension(AnhNenFile.FileName);
+                    string fileName = "AnhNen_" + phim.IDPhim + extension;
+                    string path = Path.Combine(Server.MapPath("~/Content/HinhAnh"), fileName);
+
+                    AnhNenFile.SaveAs(path);
+                    phim.AnhNen = fileName;
+                }
+
+                db.SaveChanges();
+                if (phim.TrangThai == "Sắp chiếu")
+                    return RedirectToAction("SapChieu");
+                else
+                    return RedirectToAction("DangChieu");
+            }
+
+            return View(model);
+        }
     }
 }

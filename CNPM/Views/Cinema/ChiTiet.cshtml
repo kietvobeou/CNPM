@@ -4,6 +4,8 @@
     ViewBag.Title = "ChiTiet";
     Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
     var lstBL = (ViewBag.BinhLuan as IEnumerable<BINH_LUAN>) ?? Enumerable.Empty<BINH_LUAN>();
+    bool isDangChieu = Model.TrangThai == "Đang chiếu" || ViewBag.IsDangChieu != null && (bool)ViewBag.IsDangChieu;
+    bool isAdmin = Session["Role"] != null && Session["Role"].ToString() == "admin";
 }
 
 <style>
@@ -32,6 +34,17 @@
     .star-rating {
         color: #ffc107;
         font-size: 20px;
+    }
+
+    /* Nút quản lý cho admin */
+    .admin-actions {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+    }
+
+    .admin-btn {
+        margin-right: 10px;
     }
 </style>
 
@@ -66,6 +79,11 @@
     <div class="container" style="position: relative; z-index: 2; height: 100%; display: flex; align-items: center;">
         <div class="hero-content text-white">
             <h1 class="display-4 fw-bold">@Model.TenPhim</h1>
+            <div class="mt-2">
+                <span class="badge bg-@(isDangChieu ? "success" : "secondary")">
+                    @(isDangChieu ? "ĐANG CHIẾU" : "SẮP CHIẾU")
+                </span>
+            </div>
         </div>
     </div>
 </section>
@@ -84,18 +102,52 @@
                          style="height: 400px; object-fit: cover;">
                 </div>
 
-                <!-- Nút đặt vé -->
-                <div class="d-grid">
-                    <a href="@Url.Action("DatVe", "Cinema", new { id = Model.IDPhim })" class="btn btn-danger btn-lg">
-                        <i class="fas fa-ticket-alt me-2"></i>ĐẶT VÉ
-                    </a>
-                </div>
+                <!-- Nút đặt vé (chỉ hiện khi phim đang chiếu và không phải admin) -->
+                @if (isDangChieu && !isAdmin)
+                {
+                    <div class="d-grid">
+                        <a href="@Url.Action("DatVe", "Cinema", new { id = Model.IDPhim })" class="btn btn-danger btn-lg">
+                            <i class="fas fa-ticket-alt me-2"></i>ĐẶT VÉ
+                        </a>
+                    </div>
+                }
+
+                <!-- Nút quản lý cho admin -->
+                @if (isAdmin)
+                {
+                    <div class="admin-actions">
+                        <a href="@Url.Action("Edit", "Phim", new { id = Model.IDPhim })" class="btn btn-warning admin-btn p-4">
+                            <i class="fas fa-edit me-1"></i>Sửa phim
+                        </a>
+                        <a href="@Url.Action("Delete", "Phim", new { id = Model.IDPhim })"
+                           class="btn btn-danger admin-btn p-4"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa phim này?');">
+                            <i class="fas fa-trash me-1"></i>Xóa phim
+                        </a>
+                    </div>
+                }
             </div>
 
             <!-- Cột phải (8) - Thông tin phim -->
             <div class="col-lg-8 col-md-7">
                 <!-- Tiêu đề lớn tên phim -->
                 <h1 class="display-5 fw-bold mb-4" style="color: #dc3545;">@Model.TenPhim</h1>
+
+                <!-- Trạng thái phim (nếu không phải admin) -->
+                @if (!isAdmin)
+                {
+                    <div class="alert alert-@(isDangChieu ? "success" : "info") mb-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        @if (isDangChieu)
+                        {
+                            <strong>Phim đang chiếu:</strong> <text>Bạn có thể đặt vé ngay bây giờ!</text>
+                        }
+                        else
+                        {
+                            <strong>Phim sắp chiếu:</strong> <text>Vui lòng quay lại vào ngày chiếu để đặt vé.</text>
+                        }
+                    </div>
+                }
 
                 <!-- Thông tin phim xếp dọc -->
                 <div class="d-flex flex-column gap-3 mb-4">
@@ -166,6 +218,31 @@
                             </div>
                         }
                     </div>
+                    @if (Session["UserID"] != null && Session["Role"] != null && Session["Role"].ToString() == "khach")
+                    {
+                        <div class="mt-5">
+                            <h4>Thêm bình luận</h4>
+                            @using (Html.BeginForm("ThemBinhLuan", "Phim", FormMethod.Post, new { id = "formBinhLuan" }))
+                            {
+                                @Html.Hidden("IDPhim", Model.IDPhim)
+                                <div class="mb-3">
+                                    <label class="form-label">Đánh giá:</label>
+                                    <div class="rating">
+                                        @for (int i = 5; i >= 1; i--)
+                                        {
+                                            <input type="radio" id="star@(i)" name="SoSao" value="@i" @(i == 5 ? "checked" : "") />
+                                            <label for="star@(i)" title="@i sao">★</label>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Nội dung:</label>
+                                    <textarea name="NoiDung" class="form-control" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </div>

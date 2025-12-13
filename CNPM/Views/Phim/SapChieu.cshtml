@@ -87,8 +87,6 @@
                                 Chi Tiết
                             </button>
 
-
-                            <!-- Nếu ADMIN thì thêm sửa/xóa -->
                             @if (Session["UserRole"] != null && Session["UserRole"].ToString() == "admin")
                             {
                                 <button class="movie-admin-btn btn-warning"

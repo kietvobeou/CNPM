@@ -4,20 +4,57 @@
 }
 
 <style>
+    /* Header với nút Thêm phim cho Admin */
+    .movie-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .add-movie-btn {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+        .add-movie-btn:hover {
+            background-color: #218838;
+            color: white;
+            text-decoration: none;
+        }
+
+        .add-movie-btn i {
+            font-size: 16px;
+        }
+
+    /* Movie card styles */
     .movie-card {
         position: relative;
         overflow: hidden;
         border-radius: 10px;
         transition: transform 0.3s ease;
         cursor: pointer;
+        background: #1a1a1a;
+        border: 1px solid #333;
     }
 
         .movie-card:hover {
-            transform: scale(1.05);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
     .movie-image-container {
         position: relative;
+        overflow: hidden;
     }
 
     .movie-img {
@@ -25,46 +62,104 @@
         height: 330px;
         object-fit: cover;
         display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .movie-card:hover .movie-img {
+        transform: scale(1.05);
     }
 
     .movie-overlay {
         position: absolute;
-        bottom: -70px;
+        bottom: 0;
         left: 0;
         width: 100%;
-        height: 70px;
-        background: rgba(0,0,0,0.85);
+        background: rgba(0, 0, 0, 0.85);
         display: flex;
         justify-content: center;
         gap: 10px;
         align-items: center;
-        transition: bottom 0.3s ease;
+        padding: 15px 10px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
     }
 
     .movie-card:hover .movie-overlay {
-        bottom: 0;
+        transform: translateY(0);
     }
 
     .movie-detail-btn {
         border: none;
-        padding: 8px 14px;
+        padding: 8px 16px;
         font-size: 14px;
         border-radius: 6px;
         background-color: #dc3545;
         color: #fff;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
     }
 
+        .movie-detail-btn:hover {
+            background-color: #c82333;
+            color: #fff;
+            text-decoration: none;
+        }
+
     .movie-admin-btn {
-        padding: 8px 14px;
+        padding: 8px 16px;
         font-size: 14px;
         border-radius: 6px;
         border: none;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+        .btn-edit:hover {
+            background-color: #e0a800;
+            color: #212529;
+            text-decoration: none;
+        }
+
+    .btn-delete {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    /* Movie title */
+    .movie-title {
+        padding: 15px;
+        color: white;
+        text-align: center;
+        font-weight: 500;
+        margin: 0;
+        font-size: 16px;
     }
 </style>
 
-
 <div class="container mt-5">
-    <h2 class="text-white mb-4">PHIM ĐANG CHIẾU</h2>
+    <!-- Header với nút Thêm phim cho Admin -->
+    <div class="movie-header">
+        <h2 class="text-white mb-0">PHIM ĐANG CHIẾU</h2>
+
+        @if (Session["Role"] != null && Session["Role"].ToString() == "admin")
+        {
+            <a href="@Url.Action("Create", "Phim")" class="add-movie-btn">
+                <i class="fas fa-plus-circle"></i> Thêm phim mới
+            </a>
+        }
+    </div>
 
     <div class="row">
         @foreach (var item in Model)
@@ -72,39 +167,56 @@
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="movie-card">
                     <div class="movie-image-container">
-
                         <img src="~/Content/HinhAnh/@item.AnhBia"
                              alt="@item.TenPhim"
                              class="movie-img" />
 
                         <!-- Overlay chức năng -->
                         <div class="movie-overlay">
-
-                            <!-- Nút Xem chi tiết -->
-                            <button class="movie-detail-btn"
-                                    onclick="location.href='@Url.Action("ChiTiet", "Cinema", new { id = item.IDPhim })'">
+                            <!-- Nút Xem chi tiết - luôn hiển thị -->
+                            <a href="@Url.Action("ChiTiet", "Cinema", new { id = item.IDPhim })"
+                               class="movie-detail-btn">
                                 Chi Tiết
-                            </button>
+                            </a>
 
-
-                            <!-- Nếu ADMIN thì hiện thêm nút -->
-                            @if (Session["UserRole"] != null && Session["UserRole"].ToString() == "admin")
+                            <!-- Nếu ADMIN thì hiện thêm nút Sửa và Xóa -->
+                            @if (Session["Role"] != null && Session["Role"].ToString() == "admin")
                             {
-                                <button class="movie-admin-btn btn-warning"
-                                        onclick="location.href='@Url.Action("Edit", "Phim", new { id = item.IDPhim })'">
+                                <a href="@Url.Action("Edit", "Phim", new { id = item.IDPhim })"
+                                   class="movie-admin-btn btn-edit">
                                     Sửa
-                                </button>
+                                </a>
 
-                                <button class="movie-admin-btn btn-danger"
-                                        onclick="location.href='@Url.Action("Delete", "Phim", new { id = item.IDPhim })'">
+                                <a href="@Url.Action("Delete", "Phim", new { id = item.IDPhim })"
+                                   class="movie-admin-btn btn-delete">
                                     Xóa
-                                </button>
+                                </a>
                             }
                         </div>
                     </div>
+
+                    <!-- Tiêu đề phim -->
+                    <h4 class="movie-title">@item.TenPhim</h4>
                 </div>
             </div>
         }
-
     </div>
 </div>
+
+<!-- Script để xác nhận xóa phim -->
+@if (Session["Role"] != null && Session["Role"].ToString() == "admin")
+{
+    <script>
+        // Xác nhận trước khi xóa phim
+        $(document).ready(function () {
+            $('.btn-delete').on('click', function (e) {
+                e.preventDefault();
+                var deleteUrl = $(this).attr('href');
+
+                if (confirm('Bạn có chắc chắn muốn xóa phim này?')) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+    </script>
+}

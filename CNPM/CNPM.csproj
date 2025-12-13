@@ -129,9 +129,11 @@
     <Compile Include="BINH_LUAN.cs">
       <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\BaoCaoController.cs" />
     <Compile Include="Controllers\CinemaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhimController.cs" />
+    <Compile Include="Controllers\TaiKhoanController.cs" />
     <Compile Include="CT_DATVE.cs">
       <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
     </Compile>
@@ -144,6 +146,8 @@
     <Compile Include="KHACH_HANG.cs">
       <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HistoryTicketViewModel.cs" />
+    <Compile Include="Models\VeModel.cs" />
     <Compile Include="PHIM.cs">
       <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
     </Compile>
@@ -169,7 +173,37 @@
     <Compile Include="RAP_PHIM.cs">
       <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
     </Compile>
+    <Compile Include="sp_DangNhap_Result.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_DatVe_Result.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetBinhLuanTheoPhim_Result.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetChiTietDonVe_Result.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetPhongChieuByRap_Result.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetSuatChieuByRapPhimNgay_Result.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_GetTinTucMoiNhat_Result.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_ThongKeDoanhThu_Result.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_TimKhachHang_Result.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
     <Compile Include="TAI_KHOAN.cs">
+      <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="THANH_TOAN.cs">
       <DependentUpon>QuanLyRapPhim.tt</DependentUpon>
     </Compile>
     <Compile Include="TIN_TUC.cs">
@@ -234,8 +268,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="QuanLyRapPhim.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>QuanLyRapPhim.Context.cs</LastGenOutput>
       <DependentUpon>QuanLyRapPhim.edmx</DependentUpon>
+      <LastGenOutput>QuanLyRapPhim.Context.cs</LastGenOutput>
     </Content>
     <Content Include="QuanLyRapPhim.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -248,13 +282,6 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="QuanLyRapPhim.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>QuanLyRapPhim.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="QuanLyRapPhim.edmx.diagram">
-      <DependentUpon>QuanLyRapPhim.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap\css\bootstrap-grid.css.map" />
     <Content Include="Content\bootstrap\css\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap\css\bootstrap-grid.rtl.css.map" />
@@ -277,6 +304,13 @@
     <Content Include="Content\bootstrap\js\bootstrap.esm.min.js.map" />
     <Content Include="Content\bootstrap\js\bootstrap.js.map" />
     <Content Include="Content\bootstrap\js\bootstrap.min.js.map" />
+    <EntityDeploy Include="QuanLyRapPhim.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>QuanLyRapPhim.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="QuanLyRapPhim.edmx.diagram">
+      <DependentUpon>QuanLyRapPhim.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -311,10 +345,15 @@
     <Content Include="Views\Phim\SapChieu.cshtml" />
     <Content Include="Views\Phim\Create.cshtml" />
     <Content Include="Views\Phim\Delete.cshtml" />
+    <Content Include="Views\TaiKhoan\Login.cshtml" />
+    <Content Include="Views\TaiKhoan\Register.cshtml" />
+    <Content Include="Views\TaiKhoan\MyTickets.cshtml" />
+    <Content Include="Views\TaiKhoan\TicketDetail.cshtml" />
+    <Content Include="Views\BaoCao\Index.cshtml" />
+    <Content Include="Views\Phim\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QuanLyRapPhimModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QuanLyRapPhimModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BINH_LUAN">
           <Key>
             <PropertyRef Name="IDBinhLuan" />
@@ -260,11 +260,6 @@
         <Function Name="sp_GetPhongChieuByRap" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IDRap" Type="int" Mode="In" />
         </Function>
-        <Function Name="sp_GetSuatChieuByRapPhimNgay" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="IDRap" Type="int" Mode="In" />
-          <Parameter Name="IDPhim" Type="int" Mode="In" />
-          <Parameter Name="NgayChieu" Type="date" Mode="In" />
-        </Function>
         <Function Name="sp_GetTinTucMoiNhat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SoLuong" Type="int" Mode="In" />
         </Function>
@@ -298,7 +293,7 @@
           <Parameter Name="Email" Type="varchar" Mode="In" />
           <Parameter Name="SoDienThoai" Type="varchar" Mode="In" />
         </Function>
-        <EntityContainer Name="QuanLyRapPhimModelStoreContainer">
+        <EntityContainer Name="QuanLyRapPhimModel1StoreContainer">
           <EntitySet Name="BINH_LUAN" EntityType="Self.BINH_LUAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CT_DATVE" EntityType="Self.CT_DATVE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DON_DAT_VE" EntityType="Self.DON_DAT_VE" Schema="dbo" store:Type="Tables" />
@@ -347,11 +342,10 @@
             <End Role="XUAT_CHIEU" EntitySet="XUAT_CHIEU" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="QuanLyRapPhimModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="QuanLyRapPhimModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="BINH_LUAN">
           <Key>
             <PropertyRef Name="IDBinhLuan" />
@@ -597,7 +591,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="QuanLyRapPhimEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="QuanLyRapPhimEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BINH_LUAN" EntityType="Self.BINH_LUAN" />
           <EntitySet Name="CT_DATVE" EntityType="Self.CT_DATVE" />
           <EntitySet Name="DON_DAT_VE" EntityType="Self.DON_DAT_VE" />
@@ -651,11 +645,11 @@
             <Parameter Name="MatKhau" Mode="In" Type="String" />
             <Parameter Name="Loai" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_DangNhap" ReturnType="Collection(QuanLyRapPhimModel.sp_DangNhap_Result)">
+          <FunctionImport Name="sp_DangNhap" ReturnType="Collection(QuanLyRapPhimModel1.sp_DangNhap_Result)">
             <Parameter Name="TenDangNhap" Mode="In" Type="String" />
             <Parameter Name="MatKhau" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_DatVe" ReturnType="Collection(QuanLyRapPhimModel.sp_DatVe_Result)">
+          <FunctionImport Name="sp_DatVe" ReturnType="Collection(QuanLyRapPhimModel1.sp_DatVe_Result)">
             <Parameter Name="IDKhachHang" Mode="In" Type="Int32" />
             <Parameter Name="IDXuatChieu" Mode="In" Type="Int32" />
             <Parameter Name="DanhSachGhe" Mode="In" Type="String" />
@@ -664,37 +658,32 @@
             <Parameter Name="IDTaiKhoan" Mode="In" Type="Int32" />
             <Parameter Name="MatKhauMoi" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_GetBinhLuanTheoPhim" ReturnType="Collection(QuanLyRapPhimModel.sp_GetBinhLuanTheoPhim_Result)">
-            <Parameter Name="IDPhim" Mode="In" Type="Int32" />
+          <FunctionImport Name="sp_GetBinhLuanTheoPhim" ReturnType="Collection(QuanLyRapPhimModel1.sp_GetBinhLuanTheoPhim_Result)">
+          <Parameter Name="IDPhim" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_GetChiTietDonVe" ReturnType="Collection(QuanLyRapPhimModel.sp_GetChiTietDonVe_Result)">
-            <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
+          <FunctionImport Name="sp_GetChiTietDonVe" ReturnType="Collection(QuanLyRapPhimModel1.sp_GetChiTietDonVe_Result)">
+          <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_GetPhongChieuByRap" ReturnType="Collection(QuanLyRapPhimModel.sp_GetPhongChieuByRap_Result)">
-            <Parameter Name="IDRap" Mode="In" Type="Int32" />
+          <FunctionImport Name="sp_GetPhongChieuByRap" ReturnType="Collection(QuanLyRapPhimModel1.sp_GetPhongChieuByRap_Result)">
+          <Parameter Name="IDRap" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_GetSuatChieuByRapPhimNgay" ReturnType="Collection(QuanLyRapPhimModel.sp_GetSuatChieuByRapPhimNgay_Result)">
-            <Parameter Name="IDRap" Mode="In" Type="Int32" />
-            <Parameter Name="IDPhim" Mode="In" Type="Int32" />
-            <Parameter Name="NgayChieu" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="sp_GetTinTucMoiNhat" ReturnType="Collection(QuanLyRapPhimModel.sp_GetTinTucMoiNhat_Result)">
-            <Parameter Name="SoLuong" Mode="In" Type="Int32" />
+          <FunctionImport Name="sp_GetTinTucMoiNhat" ReturnType="Collection(QuanLyRapPhimModel1.sp_GetTinTucMoiNhat_Result)">
+          <Parameter Name="SoLuong" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_HuyDonVe">
-            <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
+          <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_KhoaTaiKhoan">
-            <Parameter Name="IDTaiKhoan" Mode="In" Type="Int32" />
+          <Parameter Name="IDTaiKhoan" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_KiemTraGheDaDat" ReturnType="Collection(String)">
-            <Parameter Name="IDXuatChieu" Mode="In" Type="Int32" />
+          <Parameter Name="IDXuatChieu" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_MoKhoaTaiKhoan">
-            <Parameter Name="IDTaiKhoan" Mode="In" Type="Int32" />
+          <Parameter Name="IDTaiKhoan" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_ThanhToanDonVe">
-            <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
+          <Parameter Name="IDDonDatVe" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_ThemBinhLuan">
             <Parameter Name="IDPhim" Mode="In" Type="Int32" />
@@ -702,12 +691,12 @@
             <Parameter Name="NoiDung" Mode="In" Type="String" />
             <Parameter Name="SoSao" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_ThongKeDoanhThu" ReturnType="Collection(QuanLyRapPhimModel.sp_ThongKeDoanhThu_Result)">
+          <FunctionImport Name="sp_ThongKeDoanhThu" ReturnType="Collection(QuanLyRapPhimModel1.sp_ThongKeDoanhThu_Result)">
             <Parameter Name="TuNgay" Mode="In" Type="DateTime" />
             <Parameter Name="DenNgay" Mode="In" Type="DateTime" />
             <Parameter Name="IDRap" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_TimKhachHang" ReturnType="Collection(QuanLyRapPhimModel.sp_TimKhachHang_Result)">
+          <FunctionImport Name="sp_TimKhachHang" ReturnType="Collection(QuanLyRapPhimModel1.sp_TimKhachHang_Result)">
             <Parameter Name="Email" Mode="In" Type="String" />
             <Parameter Name="SoDienThoai" Mode="In" Type="String" />
           </FunctionImport>
@@ -757,22 +746,6 @@
           <Property Type="Int32" Name="SoLuongGhe" Nullable="false" />
           <Property Type="String" Name="LoaiPhong" Nullable="true" MaxLength="20" />
         </ComplexType>
-        <ComplexType Name="sp_GetSuatChieuByRapPhimNgay_Result">
-          <Property Type="Int32" Name="IDXuatChieu" Nullable="false" />
-          <Property Type="Int32" Name="IDPhim" Nullable="false" />
-          <Property Type="Int32" Name="IDPhong" Nullable="false" />
-          <Property Type="DateTime" Name="NgayChieu" Nullable="false" />
-          <Property Type="String" Name="GioChieu" Nullable="true" MaxLength="5" />
-          <Property Type="Decimal" Name="GiaVe" Nullable="false" Precision="10" Scale="2" />
-          <Property Type="String" Name="TenPhong" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="SoLuongGhe" Nullable="false" />
-          <Property Type="String" Name="LoaiPhong" Nullable="true" MaxLength="20" />
-          <Property Type="Int32" Name="IDRap" Nullable="false" />
-          <Property Type="String" Name="TenRap" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="DiaChi" Nullable="false" MaxLength="200" />
-          <Property Type="String" Name="TenPhim" Nullable="false" MaxLength="200" />
-          <Property Type="Int32" Name="ThoiLuong" Nullable="false" />
-        </ComplexType>
         <ComplexType Name="sp_GetTinTucMoiNhat_Result">
           <Property Type="Int32" Name="IDTinTuc" Nullable="false" />
           <Property Type="String" Name="TieuDe" Nullable="false" MaxLength="255" />
@@ -799,9 +772,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="QuanLyRapPhimModelStoreContainer" CdmEntityContainer="QuanLyRapPhimEntities">
+        <EntityContainerMapping StorageEntityContainer="QuanLyRapPhimModel1StoreContainer" CdmEntityContainer="QuanLyRapPhimEntities1">
           <EntitySetMapping Name="BINH_LUAN">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.BINH_LUAN">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.BINH_LUAN">
               <MappingFragment StoreEntitySet="BINH_LUAN">
                 <ScalarProperty Name="IDBinhLuan" ColumnName="IDBinhLuan" />
                 <ScalarProperty Name="IDPhim" ColumnName="IDPhim" />
@@ -813,7 +786,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CT_DATVE">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.CT_DATVE">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.CT_DATVE">
               <MappingFragment StoreEntitySet="CT_DATVE">
                 <ScalarProperty Name="IDChiTiet" ColumnName="IDChiTiet" />
                 <ScalarProperty Name="IDDonDatVe" ColumnName="IDDonDatVe" />
@@ -823,7 +796,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DON_DAT_VE">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.DON_DAT_VE">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.DON_DAT_VE">
               <MappingFragment StoreEntitySet="DON_DAT_VE">
                 <ScalarProperty Name="IDDonDatVe" ColumnName="IDDonDatVe" />
                 <ScalarProperty Name="IDKhachHang" ColumnName="IDKhachHang" />
@@ -835,7 +808,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="KHACH_HANG">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.KHACH_HANG">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.KHACH_HANG">
               <MappingFragment StoreEntitySet="KHACH_HANG">
                 <ScalarProperty Name="IDKhachHang" ColumnName="IDKhachHang" />
                 <ScalarProperty Name="HoTen" ColumnName="HoTen" />
@@ -847,7 +820,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PHIMs">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.PHIM">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.PHIM">
               <MappingFragment StoreEntitySet="PHIM">
                 <ScalarProperty Name="IDPhim" ColumnName="IDPhim" />
                 <ScalarProperty Name="TenPhim" ColumnName="TenPhim" />
@@ -862,7 +835,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PHONG_CHIEU">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.PHONG_CHIEU">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.PHONG_CHIEU">
               <MappingFragment StoreEntitySet="PHONG_CHIEU">
                 <ScalarProperty Name="IDPhong" ColumnName="IDPhong" />
                 <ScalarProperty Name="IDRap" ColumnName="IDRap" />
@@ -873,7 +846,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RAP_PHIM">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.RAP_PHIM">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.RAP_PHIM">
               <MappingFragment StoreEntitySet="RAP_PHIM">
                 <ScalarProperty Name="IDRap" ColumnName="IDRap" />
                 <ScalarProperty Name="TenRap" ColumnName="TenRap" />
@@ -884,7 +857,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TAI_KHOAN">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.TAI_KHOAN">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.TAI_KHOAN">
               <MappingFragment StoreEntitySet="TAI_KHOAN">
                 <ScalarProperty Name="IDTaiKhoan" ColumnName="IDTaiKhoan" />
                 <ScalarProperty Name="IDKhachHang" ColumnName="IDKhachHang" />
@@ -897,7 +870,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="THANH_TOAN">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.THANH_TOAN">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.THANH_TOAN">
               <MappingFragment StoreEntitySet="THANH_TOAN">
                 <ScalarProperty Name="IDThanhToan" ColumnName="IDThanhToan" />
                 <ScalarProperty Name="IDDonDatVe" ColumnName="IDDonDatVe" />
@@ -908,7 +881,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIN_TUC">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.TIN_TUC">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.TIN_TUC">
               <MappingFragment StoreEntitySet="TIN_TUC">
                 <ScalarProperty Name="IDTinTuc" ColumnName="IDTinTuc" />
                 <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
@@ -919,7 +892,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="XUAT_CHIEU">
-            <EntityTypeMapping TypeName="QuanLyRapPhimModel.XUAT_CHIEU">
+            <EntityTypeMapping TypeName="QuanLyRapPhimModel1.XUAT_CHIEU">
               <MappingFragment StoreEntitySet="XUAT_CHIEU">
                 <ScalarProperty Name="IDXuatChieu" ColumnName="IDXuatChieu" />
                 <ScalarProperty Name="IDPhim" ColumnName="IDPhim" />
@@ -930,10 +903,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_DangKyTaiKhoan" FunctionName="QuanLyRapPhimModel.Store.sp_DangKyTaiKhoan" />
-          <FunctionImportMapping FunctionImportName="sp_DangNhap" FunctionName="QuanLyRapPhimModel.Store.sp_DangNhap">
+          <FunctionImportMapping FunctionImportName="sp_DangKyTaiKhoan" FunctionName="QuanLyRapPhimModel1.Store.sp_DangKyTaiKhoan" />
+          <FunctionImportMapping FunctionImportName="sp_DangNhap" FunctionName="QuanLyRapPhimModel1.Store.sp_DangNhap">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_DangNhap_Result">
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel1.sp_DangNhap_Result">
                 <ScalarProperty Name="IDTaiKhoan" ColumnName="IDTaiKhoan" />
                 <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
                 <ScalarProperty Name="Loai" ColumnName="Loai" />
@@ -946,18 +919,18 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_DatVe" FunctionName="QuanLyRapPhimModel.Store.sp_DatVe">
+          <FunctionImportMapping FunctionImportName="sp_DatVe" FunctionName="QuanLyRapPhimModel1.Store.sp_DatVe">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_DatVe_Result">
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel1.sp_DatVe_Result">
                 <ScalarProperty Name="IDDonDatVe" ColumnName="IDDonDatVe" />
                 <ScalarProperty Name="TongTien" ColumnName="TongTien" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_DoiMatKhau" FunctionName="QuanLyRapPhimModel.Store.sp_DoiMatKhau" />
-          <FunctionImportMapping FunctionImportName="sp_GetBinhLuanTheoPhim" FunctionName="QuanLyRapPhimModel.Store.sp_GetBinhLuanTheoPhim">
+          <FunctionImportMapping FunctionImportName="sp_DoiMatKhau" FunctionName="QuanLyRapPhimModel1.Store.sp_DoiMatKhau" />
+          <FunctionImportMapping FunctionImportName="sp_GetBinhLuanTheoPhim" FunctionName="QuanLyRapPhimModel1.Store.sp_GetBinhLuanTheoPhim">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetBinhLuanTheoPhim_Result">
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel1.sp_GetBinhLuanTheoPhim_Result">
                 <ScalarProperty Name="IDBinhLuan" ColumnName="IDBinhLuan" />
                 <ScalarProperty Name="IDPhim" ColumnName="IDPhim" />
                 <ScalarProperty Name="TenNguoiBinhLuan" ColumnName="TenNguoiBinhLuan" />
@@ -967,9 +940,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_GetChiTietDonVe" FunctionName="QuanLyRapPhimModel.Store.sp_GetChiTietDonVe">
+          <FunctionImportMapping FunctionImportName="sp_GetChiTietDonVe" FunctionName="QuanLyRapPhimModel1.Store.sp_GetChiTietDonVe">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetChiTietDonVe_Result">
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel1.sp_GetChiTietDonVe_Result">
                 <ScalarProperty Name="IDDonDatVe" ColumnName="IDDonDatVe" />
                 <ScalarProperty Name="IDKhachHang" ColumnName="IDKhachHang" />
                 <ScalarProperty Name="IDXuatChieu" ColumnName="IDXuatChieu" />
@@ -986,9 +959,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_GetPhongChieuByRap" FunctionName="QuanLyRapPhimModel.Store.sp_GetPhongChieuByRap">
+          <FunctionImportMapping FunctionImportName="sp_GetPhongChieuByRap" FunctionName="QuanLyRapPhimModel1.Store.sp_GetPhongChieuByRap">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetPhongChieuByRap_Result">
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel1.sp_GetPhongChieuByRap_Result">
                 <ScalarProperty Name="IDPhong" ColumnName="IDPhong" />
                 <ScalarProperty Name="IDRap" ColumnName="IDRap" />
                 <ScalarProperty Name="TenPhong" ColumnName="TenPhong" />
@@ -997,29 +970,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_GetSuatChieuByRapPhimNgay" FunctionName="QuanLyRapPhimModel.Store.sp_GetSuatChieuByRapPhimNgay">
+          <FunctionImportMapping FunctionImportName="sp_GetTinTucMoiNhat" FunctionName="QuanLyRapPhimModel1.Store.sp_GetTinTucMoiNhat">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetSuatChieuByRapPhimNgay_Result">
-                <ScalarProperty Name="IDXuatChieu" ColumnName="IDXuatChieu" />
-                <ScalarProperty Name="IDPhim" ColumnName="IDPhim" />
-                <ScalarProperty Name="IDPhong" ColumnName="IDPhong" />
-                <ScalarProperty Name="NgayChieu" ColumnName="NgayChieu" />
-                <ScalarProperty Name="GioChieu" ColumnName="GioChieu" />
-                <ScalarProperty Name="GiaVe" ColumnName="GiaVe" />
-                <ScalarProperty Name="TenPhong" ColumnName="TenPhong" />
-                <ScalarProperty Name="SoLuongGhe" ColumnName="SoLuongGhe" />
-                <ScalarProperty Name="LoaiPhong" ColumnName="LoaiPhong" />
-                <ScalarProperty Name="IDRap" ColumnName="IDRap" />
-                <ScalarProperty Name="TenRap" ColumnName="TenRap" />
-                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
-                <ScalarProperty Name="TenPhim" ColumnName="TenPhim" />
-                <ScalarProperty Name="ThoiLuong" ColumnName="ThoiLuong" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_GetTinTucMoiNhat" FunctionName="QuanLyRapPhimModel.Store.sp_GetTinTucMoiNhat">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_GetTinTucMoiNhat_Result">
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel1.sp_GetTinTucMoiNhat_Result">
                 <ScalarProperty Name="IDTinTuc" ColumnName="IDTinTuc" />
                 <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
                 <ScalarProperty Name="AnhBia" ColumnName="AnhBia" />
@@ -1028,15 +981,15 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_HuyDonVe" FunctionName="QuanLyRapPhimModel.Store.sp_HuyDonVe" />
-          <FunctionImportMapping FunctionImportName="sp_KhoaTaiKhoan" FunctionName="QuanLyRapPhimModel.Store.sp_KhoaTaiKhoan" />
-          <FunctionImportMapping FunctionImportName="sp_KiemTraGheDaDat" FunctionName="QuanLyRapPhimModel.Store.sp_KiemTraGheDaDat" />
-          <FunctionImportMapping FunctionImportName="sp_MoKhoaTaiKhoan" FunctionName="QuanLyRapPhimModel.Store.sp_MoKhoaTaiKhoan" />
-          <FunctionImportMapping FunctionImportName="sp_ThanhToanDonVe" FunctionName="QuanLyRapPhimModel.Store.sp_ThanhToanDonVe" />
-          <FunctionImportMapping FunctionImportName="sp_ThemBinhLuan" FunctionName="QuanLyRapPhimModel.Store.sp_ThemBinhLuan" />
-          <FunctionImportMapping FunctionImportName="sp_ThongKeDoanhThu" FunctionName="QuanLyRapPhimModel.Store.sp_ThongKeDoanhThu">
+          <FunctionImportMapping FunctionImportName="sp_HuyDonVe" FunctionName="QuanLyRapPhimModel1.Store.sp_HuyDonVe" />
+          <FunctionImportMapping FunctionImportName="sp_KhoaTaiKhoan" FunctionName="QuanLyRapPhimModel1.Store.sp_KhoaTaiKhoan" />
+          <FunctionImportMapping FunctionImportName="sp_KiemTraGheDaDat" FunctionName="QuanLyRapPhimModel1.Store.sp_KiemTraGheDaDat" />
+          <FunctionImportMapping FunctionImportName="sp_MoKhoaTaiKhoan" FunctionName="QuanLyRapPhimModel1.Store.sp_MoKhoaTaiKhoan" />
+          <FunctionImportMapping FunctionImportName="sp_ThanhToanDonVe" FunctionName="QuanLyRapPhimModel1.Store.sp_ThanhToanDonVe" />
+          <FunctionImportMapping FunctionImportName="sp_ThemBinhLuan" FunctionName="QuanLyRapPhimModel1.Store.sp_ThemBinhLuan" />
+          <FunctionImportMapping FunctionImportName="sp_ThongKeDoanhThu" FunctionName="QuanLyRapPhimModel1.Store.sp_ThongKeDoanhThu">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_ThongKeDoanhThu_Result">
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel1.sp_ThongKeDoanhThu_Result">
                 <ScalarProperty Name="Ngay" ColumnName="Ngay" />
                 <ScalarProperty Name="SoDon" ColumnName="SoDon" />
                 <ScalarProperty Name="TongDoanhThu" ColumnName="TongDoanhThu" />
@@ -1044,9 +997,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_TimKhachHang" FunctionName="QuanLyRapPhimModel.Store.sp_TimKhachHang">
+          <FunctionImportMapping FunctionImportName="sp_TimKhachHang" FunctionName="QuanLyRapPhimModel1.Store.sp_TimKhachHang">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanLyRapPhimModel.sp_TimKhachHang_Result">
+              <ComplexTypeMapping TypeName="QuanLyRapPhimModel1.sp_TimKhachHang_Result">
                 <ScalarProperty Name="IDKhachHang" ColumnName="IDKhachHang" />
                 <ScalarProperty Name="HoTen" ColumnName="HoTen" />
                 <ScalarProperty Name="SoDienThoai" ColumnName="SoDienThoai" />

@@ -1,0 +1,231 @@
+﻿@model CNPM.PHIM
+
+@{
+    Layout = "~/Views/Shared/_KhachHangLayout.cshtml";
+    ViewBag.Title = "Chỉnh Sửa Phim";
+}
+
+<style>
+    .form-label {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 10px 12px;
+        margin-bottom: 16px;
+        transition: all 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: #750000;
+            box-shadow: 0 0 0 0.2rem rgba(117, 0, 0, 0.25);
+        }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .img-preview-container {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border: 1px dashed #dee2e6;
+    }
+
+    .current-image-label {
+        color: #6c757d;
+        font-size: 13px;
+        font-style: italic;
+        margin-top: 5px;
+    }
+
+    .btn-primary {
+        background-color: #750000;
+        border-color: #750000;
+        padding: 10px 30px;
+        font-weight: 600;
+    }
+
+        .btn-primary:hover {
+            background-color: #5a0000;
+            border-color: #5a0000;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        padding: 10px 30px;
+        font-weight: 600;
+    }
+
+    .upload-section {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-dark" style="color: #2c3e50;">@ViewBag.Title</h2>
+
+    @using (Html.BeginForm("Edit", "Phim", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.IDPhim)
+
+        <div class="row">
+            <!-- Cột thông tin cơ bản -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Tên Phim</label>
+                    @Html.EditorFor(model => model.TenPhim, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên phim" } })
+                    @Html.ValidationMessageFor(model => model.TenPhim, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Thể loại</label>
+                    @Html.EditorFor(model => model.TheLoai, new { htmlAttributes = new { @class = "form-control", placeholder = "Ví dụ: Hành động, Lãng mạn, Kinh dị..." } })
+                    @Html.ValidationMessageFor(model => model.TheLoai, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Thời Lượng (phút)</label>
+                    @Html.EditorFor(model => model.ThoiLuong, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1", placeholder = "Ví dụ: 120" } })
+                    @Html.ValidationMessageFor(model => model.ThoiLuong, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Đạo Diễn</label>
+                    @Html.EditorFor(model => model.DaoDien, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên đạo diễn" } })
+                    @Html.ValidationMessageFor(model => model.DaoDien, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Trạng thái</label>
+                    @Html.DropDownListFor(model => model.TrangThai,
+                        new SelectList(new[] { "Đang chiếu", "Sắp chiếu", "Ngừng chiếu" }),
+                        "Chọn trạng thái",
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TrangThai, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- Cột tóm tắt -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Tóm tắt</label>
+                    @Html.TextAreaFor(model => model.TomTat, new { @class = "form-control", rows = 12, placeholder = "Nhập nội dung tóm tắt phim..." })
+                    @Html.ValidationMessageFor(model => model.TomTat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <!-- Phần upload ảnh nằm ngang -->
+        <div class="upload-section">
+            <h4 class="mb-4" style="color: #2c3e50;">Hình ảnh phim</h4>
+            <div class="row">
+                <!-- Ảnh nền -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Ảnh Nền</label>
+                        <div class="img-preview-container">
+                            @if (!string.IsNullOrEmpty(Model.AnhNen))
+                            {
+                                <img src="@Url.Content("~/Content/HinhAnh/" + Model.AnhNen)"
+                                     style="max-width: 100%; max-height: 200px; border-radius: 6px;"
+                                     class="img-thumbnail mb-2" />
+                                <div class="current-image-label">Ảnh hiện tại: @Model.AnhNen</div>
+                            }
+                            else
+                            {
+                                <div class="text-center text-muted py-4">
+                                    <i class="fas fa-image fa-3x mb-3"></i>
+                                    <p>Chưa có ảnh nền</p>
+                                </div>
+                            }
+                        </div>
+                        <label class="form-label">Tải lên ảnh mới</label>
+                        <input type="file" name="AnhNenFile" class="form-control" />
+                        <small class="text-muted">Định dạng: JPG, PNG. Kích thước đề xuất: 1920x1080px</small>
+                    </div>
+                </div>
+
+                <!-- Ảnh bìa -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Ảnh Bìa</label>
+                        <div class="img-preview-container">
+                            @if (!string.IsNullOrEmpty(Model.AnhBia))
+                            {
+                                <img src="@Url.Content("~/Content/HinhAnh/" + Model.AnhBia)"
+                                     style="max-width: 100%; max-height: 200px; border-radius: 6px;"
+                                     class="img-thumbnail mb-2" />
+                                <div class="current-image-label">Ảnh hiện tại: @Model.AnhBia</div>
+                            }
+                            else
+                            {
+                                <div class="text-center text-muted py-4">
+                                    <i class="fas fa-image fa-3x mb-3"></i>
+                                    <p>Chưa có ảnh bìa</p>
+                                </div>
+                            }
+                        </div>
+                        <label class="form-label">Tải lên ảnh mới</label>
+                        <input type="file" name="AnhBiaFile" class="form-control" />
+                        <small class="text-muted">Định dạng: JPG, PNG. Kích thước đề xuất: 300x450px</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút hành động -->
+        <div class="form-group mt-5">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+                    @Html.ActionLink("Quay lại", "SapChieu", "Phim", null, new { @class = "btn btn-secondary ml-2" })
+                </div>
+                @Html.ActionLink("Xem chi tiết", "ChiTiet", "Cinema", new { id = Model.IDPhim }, new { @class = "btn btn-outline-info" })
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Preview image khi chọn file
+        $('input[type="file"]').change(function (e) {
+            var input = this;
+            var previewContainer = $(this).closest('.form-group').find('.img-preview-container');
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewContainer.html(`
+                        <img src="${e.target.result}"
+                             style="max-width: 100%; max-height: 200px; border-radius: 6px;"
+                             class="img-thumbnail mb-2" />
+                        <div class="current-image-label">Ảnh mới đã chọn</div>
+                    `);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
+        // Thêm hiệu ứng khi focus vào các input
+        $('.form-control').focus(function () {
+            $(this).parent().find('.form-label').css('color', '#750000');
+        }).blur(function () {
+            $(this).parent().find('.form-label').css('color', '#2c3e50');
+        });
+    });
+</script>

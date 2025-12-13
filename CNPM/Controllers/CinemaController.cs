@@ -16,13 +16,13 @@ namespace CNPM.Controllers
         // GET: Cinema/Index
         public ActionResult Index()
         {
-            ViewBag.PhimSC = db.PHIM
+            ViewBag.PhimSC = db.PHIMs
              .Where(p => p.TrangThai == "Sắp chiếu")
              .OrderBy(r => Guid.NewGuid())
              .Take(4)
              .ToList();
 
-            ViewBag.PhimDC = db.PHIM
+            ViewBag.PhimDC = db.PHIMs
                 .Where(p => p.TrangThai == "Đang chiếu")
                 .OrderBy(r => Guid.NewGuid())
                 .Take(4)
@@ -34,23 +34,45 @@ namespace CNPM.Controllers
                 .ToList();
             return View();
         }
-        
-       
+
+
 
 
         // GET: Cinema/ChiTiet/1
         public ActionResult ChiTiet(int id)
         {
-            var phim = db.PHIM.FirstOrDefault(s => s.IDPhim == id);
+            var phim = db.PHIMs.FirstOrDefault(s => s.IDPhim == id);
+            if (phim == null)
+            {
+                return HttpNotFound();
+            }
+
             List<BINH_LUAN> bl = db.BINH_LUAN.Where(s => s.IDPhim == id).ToList();
-            ViewBag.bl = bl;
+            ViewBag.BinhLuan = bl;
+            bool isDangChieu = false;
+
+            if (!string.IsNullOrEmpty(phim.TrangThai))
+            {
+                string trangThai = phim.TrangThai.Trim().ToLower();
+                isDangChieu = trangThai == "đang chiếu" ||
+                              trangThai == "dang chieu" ||
+                              trangThai == "đang chiếu" ||
+                              trangThai == "dangchieu" ||
+                              trangThai == "1" || 
+                              trangThai == "true" || 
+                              trangThai.Contains("đang") ||
+                              trangThai.Contains("dang");
+            }
+
+            ViewBag.IsDangChieu = isDangChieu;
+
             return View(phim);
         }
 
         // GET: Cinema/DatVe/1
         public ActionResult DatVe(int id)
         {
-            var phim = db.PHIM.Find(id);
+            var phim = db.PHIMs.Find(id);
             if (phim == null)
             {
                 return HttpNotFound();
@@ -131,12 +153,19 @@ namespace CNPM.Controllers
         {
             try
             {
-                // Lấy ID khách hàng từ session (tạm thời dùng ID 1 để test)
-                int idKhachHang = 1; // Test với khách hàng ID 1
+                // Kiểm tra đăng nhập
+                if (Session["UserID"] == null || Session["Role"] == null)
+                {
+                    return Json(new { success = false, message = "Vui lòng đăng nhập!" });
+                }
 
-                // Hoặc nếu có session:
-                // int? idKhachHang = Session["IDKhachHang"] as int?;
-                // if (!idKhachHang.HasValue) idKhachHang = 1;
+                // Lấy ID khách hàng từ Session
+                int? idKhachHang = Session["KhachHangID"] as int?;
+
+                if (!idKhachHang.HasValue)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy thông tin khách hàng!" });
+                }
 
                 // Tạo danh sách ghế định dạng "A1:85000,A2:85000"
                 string danhSachGhe = string.Join(",",
@@ -145,7 +174,7 @@ namespace CNPM.Controllers
                 // Gọi stored procedure đặt vé
                 var result = db.Database.SqlQuery<BookingResult>(
                     "EXEC sp_DatVe @IDKhachHang, @IDXuatChieu, @DanhSachGhe",
-                    new SqlParameter("@IDKhachHang", idKhachHang),
+                    new SqlParameter("@IDKhachHang", idKhachHang.Value),
                     new SqlParameter("@IDXuatChieu", model.idXuatChieu),
                     new SqlParameter("@DanhSachGhe", danhSachGhe)
                 ).FirstOrDefault();
@@ -185,6 +214,18 @@ namespace CNPM.Controllers
         // GET: Cinema/ThanhToan
         public ActionResult ThanhToan(int idXuatChieu, string danhSachGhe)
         {
+            // Kiểm tra đăng nhập
+            if (Session["UserID"] == null || Session["Role"] == null)
+            {
+                return RedirectToAction("Login", "TaiKhoan");
+            }
+
+            // Kiểm tra nếu không phải khách hàng
+            if (Session["Role"].ToString() != "khach")
+            {
+                return RedirectToAction("Index", "Cinema");
+            }
+
             try
             {
                 // Lấy thông tin xuất chiếu kèm các bảng liên quan
@@ -228,8 +269,25 @@ namespace CNPM.Controllers
         {
             try
             {
-                // Lấy ID khách hàng (tạm thời dùng ID 1 để test)
-                int idKhachHang = 1;
+                // Kiểm tra đăng nhập
+                if (Session["UserID"] == null || Session["Role"] == null)
+                {
+                    return Json(new { success = false, message = "Vui lòng đăng nhập!" });
+                }
+
+                // Kiểm tra nếu không phải khách hàng
+                if (Session["Role"].ToString() != "khach")
+                {
+                    return Json(new { success = false, message = "Bạn không có quyền đặt vé!" });
+                }
+
+                // Lấy ID khách hàng từ Session
+                int? idKhachHang = Session["KhachHangID"] as int?;
+
+                if (!idKhachHang.HasValue)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy thông tin khách hàng!" });
+                }
 
                 // Parse danh sách ghế
                 var gheList = danhSachGhe?.Split(',').ToList() ?? new List<string>();
@@ -238,11 +296,7 @@ namespace CNPM.Controllers
                 var xuatChieu = db.XUAT_CHIEU.Find(idXuatChieu);
                 if (xuatChieu == null)
                 {
-                    return Json(new
-                    {
-                        success = false,
-                        message = "Suất chiếu không tồn tại!"
-                    });
+                    return Json(new { success = false, message = "Suất chiếu không tồn tại!" });
                 }
 
                 // Tạo danh sách ghế định dạng "A1:85000,A2:85000"
@@ -252,14 +306,23 @@ namespace CNPM.Controllers
                 // Gọi stored procedure đặt vé
                 var result = db.Database.SqlQuery<BookingResult>(
                     "EXEC sp_DatVe @IDKhachHang, @IDXuatChieu, @DanhSachGhe",
-                    new SqlParameter("@IDKhachHang", idKhachHang),
+                    new SqlParameter("@IDKhachHang", idKhachHang.Value),
                     new SqlParameter("@IDXuatChieu", idXuatChieu),
                     new SqlParameter("@DanhSachGhe", danhSachGheFormatted)
                 ).FirstOrDefault();
 
                 if (result != null && result.IDDonDatVe > 0)
                 {
-                    // Có thể thêm code lưu phương thức thanh toán vào đây
+                    // Thêm thông tin thanh toán
+                    THANH_TOAN thanhToan = new THANH_TOAN
+                    {
+                        IDDonDatVe = result.IDDonDatVe,
+                        PhuongThuc = phuongThucThanhToan,
+                        TrangThai = "Thành công",
+                        NgayThanhToan = DateTime.Now
+                    };
+                    db.THANH_TOAN.Add(thanhToan);
+                    db.SaveChanges();
 
                     return Json(new
                     {

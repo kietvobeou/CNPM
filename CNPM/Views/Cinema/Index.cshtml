@@ -28,7 +28,6 @@
                 <h2 class="section-title text-start">PHIM ĐANG CHIẾU</h2>
             </div>
         </div>
-        <a href="@Url.Action("ChiTiet", "Cinema", new { id = 1})">link</a>
         <div class="row">
             @foreach (var item in phimDangChieu)
             {
@@ -37,7 +36,7 @@
                         <div class="movie-image-container">
                             <img src="~/Content/HinhAnh/@item.AnhBia" alt="@item.TenPhim" class="movie-img">
                             <div class="movie-overlay">
-                                <button class="movie-detail-btn" onclick="location.href='@Url.Action("Detail", "Movies")'">Chi Tiết</button>
+                                <button class="movie-detail-btn" onclick="location.href='@Url.Action("ChiTiet", "Cinema", new { id = item.IDPhim})'">Chi Tiết</button>
                             </div>
                         </div>
                     </div>
@@ -48,7 +47,7 @@
         <!-- Nút Xem Thêm ở giữa -->
         <div class="row mt-4">
             <div class="col-12 text-center">
-                <button class="view-more-center" onclick="location.href='@Url.Action("NowShowing", "Movies")'">Xem Thêm</button>
+                <button class="view-more-center" onclick="location.href='@Url.Action("DangChieu", "Phim")'">Xem Thêm</button>
             </div>
         </div>
     </div>
@@ -142,7 +141,6 @@
 
 <section class="movie-section py-5 mt-5">
     <div class="container">
-        <!-- Tiêu đề căn trái -->
         <div class="row mb-4">
             <div class="col-12">
                 <h2 class="section-title text-start">PHIM SẮP CHIẾU</h2>
@@ -150,59 +148,22 @@
         </div>
 
         <div class="row">
-            <!-- Phim 1: AVATAR -->
+            @foreach (var item in phimSapChieu)
+            {
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="movie-card">
                     <div class="movie-image-container">
-                        <img src="https://via.placeholder.com/300x450/0D0D0D/F5F5F5?text=AVATAR" alt="AVATAR" class="movie-img">
+                        <img src="~/Content/HinhAnh/@item.AnhBia" alt="@item.TenPhim" class="movie-img">
                         <div class="movie-overlay">
-                            <button class="movie-detail-btn" onclick="location.href='@Url.Action("Detail", "Movies")'">Chi Tiết</button>
+                            <button class="movie-detail-btn" onclick="location.href='@Url.Action("ChiTiet", "Cinema", new { id = item.IDPhim })'">Chi Tiết</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Phim 2: SAN VALLEY -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="movie-card">
-                    <div class="movie-image-container">
-                        <img src="https://via.placeholder.com/300x450/0D0D0D/F5F5F5?text=SAN+VALLEY" alt="SAN VALLEY" class="movie-img">
-                        <div class="movie-overlay">
-                            <button class="movie-detail-btn" onclick="location.href='@Url.Action("Detail", "Movies")'">Chi Tiết</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Phim 3: LION KING -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="movie-card">
-                    <div class="movie-image-container">
-                        <img src="https://via.placeholder.com/300x450/0D0D0D/F5F5F5?text=LION+KING" alt="LION KING" class="movie-img">
-                        <div class="movie-overlay">
-                            <button class="movie-detail-btn" onclick="location.href='@Url.Action("Detail", "Movies")'">Chi Tiết</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Phim 4: THE MATRIX -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="movie-card">
-                    <div class="movie-image-container">
-                        <img src="https://via.placeholder.com/300x450/0D0D0D/F5F5F5?text=THE+MATRIX" alt="THE MATRIX" class="movie-img">
-                        <div class="movie-overlay">
-                            <button class="movie-detail-btn" onclick="location.href='@Url.Action("Detail", "Movies")'">Chi Tiết</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Nút Xem Thêm ở giữa -->
+            }
         <div class="row mt-4">
             <div class="col-12 text-center">
-                <button class="view-more-center" onclick="location.href='@Url.Action("ComingSoon", "Movies")'">Xem Thêm</button>
+                <button class="view-more-center" onclick="location.href='@Url.Action("SapChieu", "Phim")'">Xem Thêm</button>
             </div>
         </div>
     </div>
